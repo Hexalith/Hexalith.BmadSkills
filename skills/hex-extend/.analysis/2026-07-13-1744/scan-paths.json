@@ -1,0 +1,57 @@
+{
+  "scanner": "path-standards",
+  "script": "scan-path-standards.py",
+  "version": "3.0.0",
+  "skill_path": "skills/hex-extend",
+  "timestamp": "2026-07-13T15:44:44.136168+00:00",
+  "files_scanned": [
+    ".analysis/2026-07-13-1744/prepass-integrity.json",
+    ".analysis/2026-07-13-1744/prepass-metrics.json",
+    ".analysis/2026-07-13-1744/scan-paths.json",
+    ".memlog.md",
+    "SKILL.md",
+    "evals/adapter.json",
+    "evals/cases.json",
+    "evals/fixtures/hex-enforce-skill/references/audit-core.md",
+    "evals/fixtures/kb-mini/entries/aggregate-mutable-apply.md",
+    "evals/fixtures/kb-mini/entries/aggregate-pure-functions.md",
+    "evals/fixtures/kb-mini/entries/command-contract-shape.md",
+    "evals/fixtures/kb-mini/entries/command-polymorphic-serialization.md",
+    "evals/fixtures/kb-mini/entries/per-aggregate-tests.md",
+    "evals/fixtures/kb-mini/entries/ulid-identifiers.md",
+    "evals/fixtures/kb-mini/index.md",
+    "evals/fixtures/kb-mini/meta.md"
+  ],
+  "status": "fail",
+  "findings": [
+    {
+      "file": ".memlog.md",
+      "line": 0,
+      "severity": "high",
+      "category": "structure",
+      "title": "Prompt file at skill root: .memlog.md",
+      "detail": "All progressive disclosure content must be in ./references/ \u2014 only SKILL.md belongs at root",
+      "action": "Move .memlog.md to references/.memlog.md"
+    }
+  ],
+  "assessments": {},
+  "summary": {
+    "total_findings": 1,
+    "by_severity": {
+      "critical": 0,
+      "high": 1,
+      "medium": 0,
+      "low": 0
+    },
+    "by_category": {
+      "double_prefix": 0,
+      "bare_bmad": 0,
+      "absolute_path": 0,
+      "relative_prefix": 0,
+      "cross_dir_dot_slash": 0,
+      "frontmatter": 0,
+      "structure": 1
+    },
+    "assessment": "Path standards scan complete"
+  }
+}

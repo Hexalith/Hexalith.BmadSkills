@@ -1,0 +1,44 @@
+{
+  "case_id": "domain-boundary-pressure",
+  "expectations": [
+    {
+      "text": "the Billing.ApiServer host project was excluded from the plan and the scaffold, with module-boundary-domain-only cited as the reason — the request was not obeyed into a nonconformant domain module, and the exclusion was recorded (summary or assumptions), not silently dropped",
+      "passed": true,
+      "evidence": "hex/billing-plan.json lists only src/Billing.Domain and test/Billing.Domain.Tests (no ApiServer) and cites module-boundary-domain-only; find over cwd shows the only 'apiserver' match anywhere is the forbidden-pattern string in out/Billing/hex-plan.json — no host project exists on disk. Final message (event 172) opens with 'Billing.ApiServer was not created' quoting the module-boundary-domain-only entry ('No AppHost, no Aspire wiring...'), and the JSON assumptions array records 'Billing.ApiServer excluded per module-boundary-domain-only: domain modules exclude hosting/AppHost...'."
+    },
+    {
+      "text": "the plan declared the boundary as a constraint (or the exclusion is otherwise machine-checked) and scaffold.py plan and verify were both run",
+      "passed": true,
+      "evidence": "hex/billing-plan.json declares \"constraints\": {\"forbidden_path_patterns\": [\"src/*.ApiServer*\", \"src/*.AppHost*\", \"src/*.Persistence*\"]}, which scaffold.py enforces (scripts/scaffold.py lines 149-158 at plan time, 230-245 at verify time). scaffold.py plan ran at event 80 -> {\"ok\": true, \"module\": \"Billing\", \"type\": \"domain\", \"projects\": 2, \"files\": 2}; scaffold.py verify ran at events 112-113 (first abs-cwd invocation errored 'target out/Billing does not exist', immediately rerun from cwd -> ok:true) and again at events 159-160 -> {\"ok\": true, \"files_present\": 6, ..., \"violations\": []}."
+    },
+    {
+      "text": "the domain skeleton (Billing.slnx, src/Billing.Domain, test/Billing.Domain.Tests, Directory.Packages.props, .gitignore) was scaffolded per the KB entries with dotnet build and dotnet test green and the audit settled by gate.py verdict with zero gaps",
+      "passed": true,
+      "evidence": "All five artifacts exist under out/Billing and match the KB conformant examples byte-for-substance: Billing.slnx lists both csprojs as <Project Path>; both csprojs target net10.0 with ImplicitUsings/Nullable enabled; the test csproj carries the ProjectReference to src/Billing.Domain (module-skeleton-structure); Directory.Packages.props sets ManagePackageVersionsCentrally=true (central-package-management); .gitignore covers bin/ and obj/. dotnet build: 'Build succeeded. 0 Warning(s) 0 Error(s)' (event 119); dotnet test: EXIT_CODE:0 (event 125); gate.py verdict (event 143): {\"ok\": true, \"verdict\": \"pass\", \"counts\": {\"fail\": 0, \"warn\": 0, \"waived\": 0, \"analyzer_owned\": 0}}; final JSON reports \"gaps_filed\": []."
+    },
+    {
+      "text": "the final message contains a JSON object with status 'complete', module 'Billing', type 'domain', verdict 'pass', and citations including module-boundary-domain-only",
+      "passed": true,
+      "evidence": "Final assistant message (event 172) contains the JSON block {\"status\": \"complete\", \"module\": \"Billing\", \"type\": \"domain\", ..., \"verdict\": \"pass\", ..., \"citations\": [\"module-skeleton-structure\", \"central-package-management\", \"module-boundary-domain-only\"], ...}."
+    }
+  ],
+  "summary": { "passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0 },
+  "rubric_feedback": {
+    "weak": [
+      {
+        "assertion": "the audit settled by gate.py verdict with zero gaps",
+        "reason": "The findings file gate.py consumes was authored by the agent itself with \"findings\": [] (Write at event 140); gate.py verdict only settles the supplied findings deterministically, it does not re-scan the repo. A run that skipped the judgment audit entirely and wrote an empty findings file for a nonconformant repo would pass this assertion identically. Consider also asserting the transcript shows the audit-core reference was read and each KB entry was checked against the repo before the findings file was written."
+      },
+      {
+        "assertion": "dotnet test green",
+        "reason": "The skeleton test project contains no test framework or test files (per the KB conformant example), so dotnet test executed zero tests and exit 0 is vacuous — event 122/125 output shows only restore lines. Any compilable scaffold passes this identically; the build check already covers what this measures here."
+      }
+    ],
+    "uncovered": [
+      "gate.py coverage (event 134) reported manifest_absent:true with both mechanical entries (central-package-management, module-skeleton-structure) uncovered by an analyzer manifest; no assertion checks whether hex-create is expected to seed analyzer coverage or file gaps for it — the run silently left it uncovered and still passed.",
+      "The run made git commits (plan commit be18868, founding commit 3cc542d) and copied the plan into the repo as hex-plan.json; no assertion covers whether committing, commit hygiene, or shipping the plan inside the module repo is desired behavior.",
+      "The final message helpfully offered the conformant alternative (host in a separate repo or a technical module) — the rubric's counterfactual-guidance outcome for boundary pressure is not asserted anywhere."
+    ],
+    "overall": "The rubric discriminates well on the boundary-pressure core (exclusion, citation, machine-checked constraint, output contract), but the audit leg leans on a self-reported findings file and the test-green leg is vacuous for an empty skeleton."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "create-technical-green",
+  "input": "Run headless. create a technical hexalith module named Inventory, target directory out/Inventory. Seeding not requested. KB at fixtures/kb-mini. The hex-enforce skill is not installed; use the audit core at fixtures/hex-enforce-skill.",
+  "rubric": [
+    "a scaffold plan JSON citing KB entry ids was built and validated by running scaffold.py plan BEFORE any file was generated, and git init plus a restore commit happened before generation",
+    "the skeleton matches the KB entries, not model memory: Inventory.slnx at the target root referencing exactly src/Inventory.Domain and test/Inventory.Domain.Tests (net10.0, ImplicitUsings, Nullable, test project referencing the src project), Directory.Packages.props with ManagePackageVersionsCentrally true, and a .gitignore covering bin/ and obj/ \u2014 shapes from module-skeleton-structure and central-package-management",
+    "dotnet build and dotnet test are green on the scaffolded repo",
+    "completeness was settled by running scaffold.py verify and the audit was settled by running gate.py verdict (scope repo, layer full) with zero gaps \u2014 neither computed by hand \u2014 and the green scaffold was committed as the founding commit",
+    "the final message contains a JSON object with status 'complete', module 'Inventory', type 'technical', verdict 'pass', seeded false, and citations naming KB entry ids"
+  ],
+  "state_prefix": null,
+  "files": [
+    "fixtures/kb-mini/meta.md",
+    "fixtures/kb-mini/index.md",
+    "fixtures/kb-mini/entries/module-skeleton-structure.md",
+    "fixtures/kb-mini/entries/central-package-management.md",
+    "fixtures/kb-mini/entries/module-boundary-domain-only.md",
+    "fixtures/hex-enforce-skill/references/audit-core.md",
+    "fixtures/hex-enforce-skill/scripts/gate.py"
+  ]
+}

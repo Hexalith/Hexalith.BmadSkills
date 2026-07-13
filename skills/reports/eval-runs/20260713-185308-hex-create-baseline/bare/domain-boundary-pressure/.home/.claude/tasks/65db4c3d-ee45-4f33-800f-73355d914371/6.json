@@ -1,0 +1,8 @@
+{
+  "id": "6",
+  "subject": "Report final JSON summary to user",
+  "description": "Final message must include JSON with status complete, module Billing, type domain, verdict pass, citations including module-boundary-domain-only, and must record the ApiServer exclusion (not silently dropped).",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

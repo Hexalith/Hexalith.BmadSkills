@@ -1,0 +1,8 @@
+{
+  "id": "3",
+  "subject": "Scaffold Billing domain module files",
+  "description": "Create out/Billing/Billing.slnx, .gitignore, Directory.Packages.props, src/Billing.Domain/Billing.Domain.csproj, test/Billing.Domain.Tests/Billing.Domain.Tests.csproj per module-skeleton-structure and central-package-management KB entries. Domain-only, no ApiServer/AppHost.",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

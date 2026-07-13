@@ -24,7 +24,7 @@ Converse in `{communication_language}`; write KB entries in `{document_output_la
 Default root `{project-root}/_bmad/hex/knowledge/`; an explicit KB path in the invocation overrides it.
 
 - `entries/<id>.md` — one convention per file; schema in `assets/entry-template.md`. Superseded conventions keep their entry with `until` set — they are hex-migrate's from-states; never delete one.
-- `intake/*.md` — gap filings from hex-consult, hex-enforce, humans, or hex-absorb itself; shape in `assets/intake-template.md`.
+- `intake/*.md` — gap filings from the sibling hex-* skills (consult, enforce, migrate, extend, create), humans, or hex-absorb itself; shape in `assets/intake-template.md`.
 - `meta.md` — frontmatter `targets_framework: '>= X.Y'`.
 - `index.md` — generated; never hand-edit.
 

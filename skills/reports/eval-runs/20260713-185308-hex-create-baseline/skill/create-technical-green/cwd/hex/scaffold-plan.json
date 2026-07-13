@@ -1,0 +1,13 @@
+{
+  "module": "Inventory",
+  "type": "technical",
+  "target": "out/Inventory",
+  "solution": "Inventory.slnx",
+  "projects": [
+    {"path": "src/Inventory.Domain/Inventory.Domain.csproj", "role": "src"},
+    {"path": "test/Inventory.Domain.Tests/Inventory.Domain.Tests.csproj", "role": "test"}
+  ],
+  "files": ["Directory.Packages.props", ".gitignore"],
+  "constraints": {},
+  "citations": ["module-skeleton-structure", "central-package-management"]
+}

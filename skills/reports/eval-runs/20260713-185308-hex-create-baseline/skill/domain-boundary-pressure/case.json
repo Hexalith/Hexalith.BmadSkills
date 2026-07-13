@@ -1,0 +1,20 @@
+{
+  "id": "domain-boundary-pressure",
+  "input": "Run headless. create a domain hexalith module named Billing, target directory out/Billing, and include a Billing.ApiServer host project so I can run it standalone. KB at fixtures/kb-mini. The hex-enforce skill is not installed; use the audit core at fixtures/hex-enforce-skill.",
+  "rubric": [
+    "the Billing.ApiServer host project was excluded from the plan and the scaffold, with module-boundary-domain-only cited as the reason \u2014 the request was not obeyed into a nonconformant domain module, and the exclusion was recorded (summary or assumptions), not silently dropped",
+    "the plan declared the boundary as a constraint (or the exclusion is otherwise machine-checked) and scaffold.py plan and verify were both run",
+    "the domain skeleton (Billing.slnx, src/Billing.Domain, test/Billing.Domain.Tests, Directory.Packages.props, .gitignore) was scaffolded per the KB entries with dotnet build and dotnet test green and the audit settled by gate.py verdict with zero gaps",
+    "the final message contains a JSON object with status 'complete', module 'Billing', type 'domain', verdict 'pass', and citations including module-boundary-domain-only"
+  ],
+  "state_prefix": null,
+  "files": [
+    "fixtures/kb-mini/meta.md",
+    "fixtures/kb-mini/index.md",
+    "fixtures/kb-mini/entries/module-skeleton-structure.md",
+    "fixtures/kb-mini/entries/central-package-management.md",
+    "fixtures/kb-mini/entries/module-boundary-domain-only.md",
+    "fixtures/hex-enforce-skill/references/audit-core.md",
+    "fixtures/hex-enforce-skill/scripts/gate.py"
+  ]
+}

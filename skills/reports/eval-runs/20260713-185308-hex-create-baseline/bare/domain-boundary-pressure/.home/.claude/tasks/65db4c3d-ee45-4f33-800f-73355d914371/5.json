@@ -1,0 +1,8 @@
+{
+  "id": "5",
+  "subject": "Run hex-enforce audit-core procedure via gate.py",
+  "description": "Run gate.py rules, coverage (no manifest present -> zero coverage), examine target for judgment-layer findings (module-boundary-domain-only compliance - confirm no domain-only violations since ApiServer excluded), write findings JSON, run gate.py verdict, expect pass with zero gaps.",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

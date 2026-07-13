@@ -1,0 +1,15 @@
+{
+  "run_id": "20260713-185308-hex-create-baseline",
+  "cases_file": "/home/administrator/projects/hexalith/bmadskills/skills/hex-create/evals/cases.json",
+  "skill_path": "/home/administrator/projects/hexalith/bmadskills/skills/hex-create",
+  "variant_path": null,
+  "mode": "baseline",
+  "configs": [
+    "skill",
+    "bare"
+  ],
+  "runs_per_case": 1,
+  "adapter": "skills/hex-create/evals/adapter.json",
+  "started_at": "2026-07-13T16:53:08Z",
+  "case_count": 3
+}

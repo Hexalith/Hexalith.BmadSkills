@@ -149,6 +149,27 @@ class KbTests(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertTrue(result["ok"])
 
+    def test_validate_accepts_migrate_extend_and_create_intake_sources(self):
+        make_kb(self.root, {"a": GOOD_ENTRY.format(id="a", until="", supersedes="", verified="")}, intake=False)
+        (self.root / "intake").mkdir()
+        for source in ("migrate", "extend", "create"):
+            (self.root / "intake" / f"{source}.md").write_text(
+                f"---\nsource: {source}\nfiled: 2026-07-13\nstatus: open\n---\n\n# Gap filed mid-run\n", encoding="utf-8"
+            )
+        code, result = run(kb.cmd_validate, self.root)
+        self.assertEqual(code, 0)
+        self.assertTrue(result["ok"])
+
+    def test_validate_rejects_unknown_intake_source(self):
+        make_kb(self.root, {"a": GOOD_ENTRY.format(id="a", until="", supersedes="", verified="")}, intake=False)
+        (self.root / "intake").mkdir()
+        (self.root / "intake" / "bad.md").write_text(
+            "---\nsource: wizard\nfiled: 2026-07-13\nstatus: open\n---\n\n# Gap\n", encoding="utf-8"
+        )
+        code, result = run(kb.cmd_validate, self.root)
+        self.assertEqual(code, 1)
+        self.assertFalse(result["ok"])
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

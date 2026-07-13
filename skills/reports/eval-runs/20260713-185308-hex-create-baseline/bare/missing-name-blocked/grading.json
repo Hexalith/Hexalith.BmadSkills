@@ -1,0 +1,34 @@
+{
+  "case_id": "missing-name-blocked",
+  "expectations": [
+    {
+      "text": "the run returns blocked without scaffolding anything: no module directory was created under out/ and no plan proceeded to generation",
+      "passed": true,
+      "evidence": "artifacts_dir contains only the pre-staged fixtures/ tree; no out/ directory exists (the run itself confirmed at transcript line 29-30: `ls out/` -> 'No such file or directory'). Transcript has zero Write/Edit tool calls and no mkdir/scaffold Bash commands - only read-only pwd/ls/find/cat/Read. Final message JSON reports status 'blocked' with files_created 0 and plan ''."
+    },
+    {
+      "text": "the reason names the missing module name and type, and no name was invented from the phrase 'handling invoices' - a module name is user intent, never guessed",
+      "passed": true,
+      "evidence": "Final JSON reason (line 34): 'Missing required module name and type: the invocation only describes purpose (\\'handling invoices\\'), not an explicit module name, and does not state whether the module is technical or domain... module name and type are user intent and are never guessed'. The module and type fields are both empty strings and nothing was scaffolded. Note: the remediation tail does offer an example ('Re-invoke with an explicit name (e.g. --name Hexalith.Invoices)'), but it is framed as user guidance, not adopted as the module's name - the run did not proceed under any guessed name."
+    },
+    {
+      "text": "the final message contains a JSON object with status 'blocked' and a reason",
+      "passed": true,
+      "evidence": "Last assistant message (transcript line 34) contains a fenced JSON object: {\"status\": \"blocked\", ..., \"reason\": \"Missing required module name and type: ...\"}."
+    }
+  ],
+  "summary": { "passed": 3, "failed": 0, "total": 3, "pass_rate": 1.0 },
+  "rubric_feedback": {
+    "weak": [
+      {
+        "assertion": "the reason names the missing module name and type, and no name was invented from the phrase 'handling invoices'",
+        "reason": "Ambiguous about example names in remediation guidance: this run's reason suggests '--name Hexalith.Invoices' as a re-invoke example, which is literally a name derived from 'invoices'. It passed here because the run blocked and adopted no name, but the assertion should state whether suggesting an example name counts as inventing one."
+      }
+    ],
+    "uncovered": [
+      "Bare-config contamination: this run is not a true bare-model floor. The agent located and read the skill under development (transcript lines 17-21: find + Read of /home/administrator/projects/hexalith/bmadskills/skills/hex-create/SKILL.md, then 'let me read it directly and follow its instructions manually'), so its blocked behavior and output schema came from the skill text, not bare-model judgment. The bare/skilled comparison for this case measures nothing unless the sandbox cwd is isolated from the repo.",
+      "Rubric leakage: the agent read its own grading criteria before acting (transcript line 10: `cat ../case.json && cat ../prompt.txt` dumped the case's rubric into context). No assertion detects this, and it lets any run teach itself the pass conditions. Case files should not be reachable from the run cwd."
+    ],
+    "overall": "All three assertions passed, but the result is unusable as a bare floor: the run cwd let the agent reach both the staged skill source and the case's own rubric, so the 'bare' run effectively ran with the skill plus the answer key. Isolate the eval cwd from the repo and case metadata before trusting bare-vs-skill deltas."
+  }
+}

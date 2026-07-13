@@ -1,0 +1,23 @@
+{
+  "firstStartTime": "2026-07-13T16:36:02.425Z",
+  "machineID": "5f4bad98fb1e73723d03f3cdcc5555707dc45c294a31b4666ec046e527b978b8",
+  "opusProMigrationComplete": true,
+  "sonnet1m45MigrationComplete": true,
+  "seenNotifications": {},
+  "migrationVersion": 13,
+  "userID": "6eda5bd95b89b1a3b23e64cb3cff9ac10d3bc5bf0f9df2abfd55df14f1767625",
+  "projects": {
+    "/home/administrator/projects/hexalith/bmadskills": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": false,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "hasUnseenTeamArtifacts": true
+    }
+  }
+}

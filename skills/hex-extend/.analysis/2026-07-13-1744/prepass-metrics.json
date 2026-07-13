@@ -1,0 +1,114 @@
+{
+  "scanner": "prompt-metrics-prepass",
+  "script": "prepass-prompt-metrics.py",
+  "version": "2.0.0",
+  "skill_path": "skills/hex-extend",
+  "timestamp": "2026-07-13T15:44:44.053289+00:00",
+  "budgets": {
+    "skill_md_tokens": [
+      1500,
+      2500
+    ],
+    "multi_branch_reference_tokens": 4500,
+    "single_purpose_reference_tokens": 9000
+  },
+  "skill_md": {
+    "tokens": 1233,
+    "token_method": "tiktoken",
+    "section_count": 6,
+    "frontmatter": {
+      "name": "hex-extend",
+      "description": "Adds conformant pieces to existing Hexalith modules. Use when the user says 'extend this module', 'add an aggregate', 'add a command', 'add a projection', 'add a request handler', or 'add a UI page'.",
+      "description_chars": 199,
+      "description_has_angle_brackets": false,
+      "keys": [
+        "description",
+        "name"
+      ]
+    }
+  },
+  "aggregate": {
+    "total_files_scanned": 2,
+    "total_tokens": 1812,
+    "total_waste_patterns": 0,
+    "total_back_references": 0,
+    "files_with_numbered_prefix": 0
+  },
+  "reference_sizes": {},
+  "files": [
+    {
+      "file": "SKILL.md",
+      "tokens": 1233,
+      "token_method": "tiktoken",
+      "sections": [
+        {
+          "level": 2,
+          "title": "Resolution rules"
+        },
+        {
+          "level": 2,
+          "title": "Shared machinery"
+        },
+        {
+          "level": 2,
+          "title": "Routing"
+        },
+        {
+          "level": 2,
+          "title": "The route skeleton"
+        },
+        {
+          "level": 2,
+          "title": "Headless"
+        },
+        {
+          "level": 2,
+          "title": "Module handoff"
+        }
+      ],
+      "table_count": 0,
+      "table_rows": 0,
+      "fenced_block_count": 1,
+      "allcaps_directive_count": 0,
+      "numbered_prefix_filename": false,
+      "waste_patterns": [],
+      "back_references": [],
+      "frontmatter": {
+        "name": "hex-extend",
+        "description": "Adds conformant pieces to existing Hexalith modules. Use when the user says 'extend this module', 'add an aggregate', 'add a command', 'add a projection', 'add a request handler', or 'add a UI page'.",
+        "description_chars": 199,
+        "description_has_angle_brackets": false,
+        "keys": [
+          "description",
+          "name"
+        ]
+      },
+      "is_skill_md": true
+    },
+    {
+      "file": ".memlog.md",
+      "tokens": 579,
+      "token_method": "tiktoken",
+      "sections": [],
+      "table_count": 0,
+      "table_rows": 0,
+      "fenced_block_count": 0,
+      "allcaps_directive_count": 0,
+      "numbered_prefix_filename": false,
+      "waste_patterns": [],
+      "back_references": [],
+      "frontmatter": {
+        "name": "",
+        "description": "",
+        "description_chars": 0,
+        "description_has_angle_brackets": false,
+        "keys": [
+          "intent",
+          "skill",
+          "updated"
+        ]
+      },
+      "is_skill_md": false
+    }
+  ]
+}

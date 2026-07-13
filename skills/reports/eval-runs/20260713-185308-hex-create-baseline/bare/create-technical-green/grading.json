@@ -1,0 +1,48 @@
+{
+  "case_id": "create-technical-green",
+  "expectations": [
+    {
+      "text": "a scaffold plan JSON citing KB entry ids was built and validated by running scaffold.py plan BEFORE any file was generated, and git init plus a restore commit happened before generation",
+      "passed": true,
+      "evidence": "Event [80] Write out/hex/inventory-scaffold-plan.json with citations ['module-skeleton-structure','central-package-management']; event [83] ran 'uv run scripts/scaffold.py plan --file .../inventory-scaffold-plan.json' (from the real skill dir, not staged fixtures) returning {\"ok\": true, \"module\": \"Inventory\", \"type\": \"technical\", \"projects\": 2, \"files\": 2} at [84]; event [86] git init + restore commit 79c3a70 'chore: scaffold plan for Inventory (restore point)'; skeleton generation only starts at [89] (mkdir) and [100]-[108] (Write slnx/props/gitignore/csproj). Order holds: plan -> validate -> git init/commit -> generate."
+    },
+    {
+      "text": "the skeleton matches the KB entries, not model memory: Inventory.slnx at the target root referencing exactly src/Inventory.Domain and test/Inventory.Domain.Tests (net10.0, ImplicitUsings, Nullable, test project referencing the src project), Directory.Packages.props with ManagePackageVersionsCentrally true, and a .gitignore covering bin/ and obj/ — shapes from module-skeleton-structure and central-package-management",
+      "passed": true,
+      "evidence": "cwd/out/Inventory/Inventory.slnx lists exactly <Project Path=\"src/Inventory.Domain/Inventory.Domain.csproj\"/> and <Project Path=\"test/Inventory.Domain.Tests/Inventory.Domain.Tests.csproj\"/>; both csproj have net10.0 + ImplicitUsings/Nullable enable; test csproj has ProjectReference Include=\"../../src/Inventory.Domain/Inventory.Domain.csproj\" (relative form the KB entry specifies); Directory.Packages.props matches the central-package-management conformant example verbatim (ManagePackageVersionsCentrally true + empty ItemGroup); .gitignore is exactly 'bin/\\nobj/'. Transcript events [22]-[26] show the KB entries were read before generation, and the shapes match the entries' conformant examples."
+    },
+    {
+      "text": "dotnet build and dotnet test are green on the scaffolded repo",
+      "passed": true,
+      "evidence": "Event [112]: 'Build succeeded. 0 Warning(s) 0 Error(s)' with both Inventory.Domain and Inventory.Domain.Tests dlls produced; events [118]-[119]: 'dotnet test; echo \"EXIT CODE: $?\"' returned EXIT CODE: 0. Note the test project contains zero tests, so 'green tests' is vacuous (see rubric feedback)."
+    },
+    {
+      "text": "completeness was settled by running scaffold.py verify and the audit was settled by running gate.py verdict (scope repo, layer full) with zero gaps — neither computed by hand — and the green scaffold was committed as the founding commit",
+      "passed": true,
+      "evidence": "Event [126]-[127]: scaffold.py verify returned {\"ok\": true, \"files_present\": 6, \"missing\": [], \"missing_from_solution\": [], \"unplanned_in_solution\": [], \"unplanned_on_disk\": [], \"violations\": []} (re-confirmed post-commit at [153]-[154]); event [142]-[143]: gate.py verdict returned {\"verdict\": \"pass\", \"scope\": \"repo\", \"layer\": \"full\", \"target\": \"out/Inventory\", counts all 0}, EXIT 0; founding commit 9d7d006 'feat: scaffold Inventory technical module skeleton' landed the 5 skeleton files at [145] with clean git status afterward. The model also inspected the tree ([137]) before writing the empty findings file it fed to verdict."
+    },
+    {
+      "text": "the final message contains a JSON object with status 'complete', module 'Inventory', type 'technical', verdict 'pass', seeded false, and citations naming KB entry ids",
+      "passed": true,
+      "evidence": "Final result event [159]: {\"status\": \"complete\", \"module\": \"Inventory\", \"type\": \"technical\", ..., \"verdict\": \"pass\", \"seeded\": false, \"citations\": [\"module-skeleton-structure\", \"central-package-management\"], ...} — all required fields present with the required values."
+    }
+  ],
+  "summary": { "passed": 5, "failed": 0, "total": 5, "pass_rate": 1.0 },
+  "rubric_feedback": {
+    "weak": [
+      {
+        "assertion": "dotnet build and dotnet test are green on the scaffolded repo",
+        "reason": "The minimal skeleton's test project has no test framework packages and zero tests, so 'dotnet test' exits 0 trivially; a broken test setup that discovers nothing would also pass. If vacuous green is acceptable for a skeleton, say so; otherwise assert 'exit code 0 AND the test project is discovered'."
+      },
+      {
+        "assertion": "the audit was settled by running gate.py verdict (scope repo, layer full) with zero gaps — neither computed by hand",
+        "reason": "gate.py verdict only aggregates a findings JSON the model itself authors; a lazy run that writes an empty findings file without inspecting the repo would produce the same 'pass' verdict and satisfy the assertion. 'Zero gaps' is also ambiguous: gate.py coverage reported two uncovered mechanical entries (manifest absent) in this very run, yet the verdict passed — the assertion does not say which output field counts as a gap."
+      }
+    ],
+    "uncovered": [
+      "CRITICAL harness contamination: this is the bare config meant to measure the no-skill floor, but the case cwd sits inside the skill repo's own tree. The model's first command ([5]) probed '../../../../../../hex-create', then read the real SKILL.md ([12]), ran the real scripts/scaffold.py ([83], [126], [153]), and read evals/cases.json containing this case's exact rubric ([48]-[49], followed by 'This confirms exactly my plan'). The bare floor was not measured — the model effectively ran WITH the skill and the answer key. No assertion (or harness check) guards against sandbox escape; bare runs should stage the cwd outside the skill repo or block upward traversal.",
+      "Nothing asserts the target directory was checked for pre-existing content before git init, or that no writes landed outside out/ and out/hex (the model also created out/hex/inventory-audit-findings.json — reasonable, but unasserted either way)."
+    ],
+    "overall": "All five assertions passed with solid artifact and transcript evidence, but the result is worthless as a bare-model floor: the run was contaminated by parent-directory access to the skill's SKILL.md, scaffold.py, and the eval rubric itself. Fix the harness isolation before trusting any bare-vs-skill delta from this run."
+  }
+}

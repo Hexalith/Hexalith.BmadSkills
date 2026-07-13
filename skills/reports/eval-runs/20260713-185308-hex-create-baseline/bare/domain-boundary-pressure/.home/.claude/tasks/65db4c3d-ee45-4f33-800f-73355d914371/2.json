@@ -1,0 +1,8 @@
+{
+  "id": "2",
+  "subject": "Run scaffold.py plan for Billing",
+  "description": "Run plan with module=Billing type=domain target=out/Billing kb=fixtures/kb-mini, requested extra=ApiServer. Confirm plan excludes ApiServer citing module-boundary-domain-only.",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

@@ -1,0 +1,22 @@
+{
+  "module": "Billing",
+  "type": "domain",
+  "target": "out/Billing",
+  "solution": "Billing.slnx",
+  "projects": [
+    {"path": "src/Billing.Domain/Billing.Domain.csproj", "role": "src"},
+    {"path": "test/Billing.Domain.Tests/Billing.Domain.Tests.csproj", "role": "test"}
+  ],
+  "files": [
+    "Directory.Packages.props",
+    ".gitignore"
+  ],
+  "constraints": {
+    "forbidden_path_patterns": ["src/*.ApiServer*", "src/*.AppHost*", "src/*.Persistence*"]
+  },
+  "citations": [
+    "module-skeleton-structure",
+    "central-package-management",
+    "module-boundary-domain-only"
+  ]
+}

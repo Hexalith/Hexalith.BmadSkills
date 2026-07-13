@@ -1,0 +1,15 @@
+{
+  "case_id": "create-technical-green",
+  "config": "skill",
+  "status": "ok",
+  "elapsed_s": 306.555,
+  "return_code": 0,
+  "transcript_source": "stdout",
+  "input_tokens": 82,
+  "output_tokens": 19336,
+  "total_tokens": 19418,
+  "tokens_reported": true,
+  "total_steps": 83,
+  "total_tool_calls": 40,
+  "captured_at": "2026-07-13T16:58:15Z"
+}

@@ -1,0 +1,43 @@
+{
+  "case_id": "domain-boundary-pressure",
+  "expectations": [
+    {
+      "text": "the Billing.ApiServer host project was excluded from the plan and the scaffold, with module-boundary-domain-only cited as the reason — the request was not obeyed into a nonconformant domain module, and the exclusion was recorded (summary or assumptions), not silently dropped",
+      "passed": true,
+      "evidence": "Plan output (transcript event 146) lists ApiServer under \"excluded\" with \"citation\": \"module-boundary-domain-only\" and a reasoned refusal; the same record is persisted in cwd/out/Billing/.scaffold-plan.json. On-disk tree contains only src/Billing.Domain and test/Billing.Domain.Tests csproj files — no ApiServer project anywhere under out/Billing. The final message opens with a 'Boundary call' paragraph naming the exclusion and citation, and the final JSON carries an \"excluded\" array with requested=Billing.ApiServer, citation=module-boundary-domain-only."
+    },
+    {
+      "text": "the plan declared the boundary as a constraint (or the exclusion is otherwise machine-checked) and scaffold.py plan and verify were both run",
+      "passed": true,
+      "evidence": "Plan output declares \"constraints\": [\"module-boundary-domain-only applies: type=domain modules get the Domain/Domain.Tests pair only\"]. `uv run scripts/scaffold.py plan --module Billing --type domain --target out/Billing --kb fixtures/kb-mini --include ApiServer` ran at events 145 and 148 (second run saved to out/Billing/.scaffold-plan.json); `uv run scripts/scaffold.py verify --target out/Billing --kb fixtures/kb-mini --type domain` ran at event 174 returning {\"ok\": true, \"gaps\": []}. The exclusion is genuinely machine-checked: cwd/scripts/scaffold.py verify flags any project whose name matches hosting/infrastructure patterns as a module-boundary-domain-only gap (line 183 of the script). Caveat: this scaffold.py was authored by the model itself during the run — no skill tooling was staged in the bare config — but the rubric as written is satisfied on substance, not surface."
+    },
+    {
+      "text": "the domain skeleton (Billing.slnx, src/Billing.Domain, test/Billing.Domain.Tests, Directory.Packages.props, .gitignore) was scaffolded per the KB entries with dotnet build and dotnet test green and the audit settled by gate.py verdict with zero gaps",
+      "passed": true,
+      "evidence": "All five elements exist under cwd/out/Billing and match the KB: Billing.slnx lists exactly the two projects as <Project Path=.../>; both csproj target net10.0 with ImplicitUsings/Nullable enable; the test csproj has a ProjectReference to src/Billing.Domain and version-less PackageReferences; Directory.Packages.props sets ManagePackageVersionsCentrally=true and holds all PackageVersion items; .gitignore covers bin/ and obj/. dotnet build (event 183): 'Build succeeded. 0 Warning(s) 0 Error(s)'. dotnet test (event 186): 'Passed! - Failed: 0, Passed: 1'. gate.py verdict (event 207): \"verdict\": \"pass\" with counts fail/warn/waived/analyzer_owned all 0 and exit 0; scaffold.py verify reported gaps: []."
+    },
+    {
+      "text": "the final message contains a JSON object with status 'complete', module 'Billing', type 'domain', verdict 'pass', and citations including module-boundary-domain-only",
+      "passed": true,
+      "evidence": "Final assistant message (event 216) contains a JSON block with \"status\": \"complete\", \"module\": \"Billing\", \"type\": \"domain\", \"verdict\": \"pass\", and \"citations\": [\"module-skeleton-structure\", \"central-package-management\", \"module-boundary-domain-only\"]."
+    }
+  ],
+  "summary": { "passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0 },
+  "rubric_feedback": {
+    "weak": [
+      {
+        "assertion": "scaffold.py plan and verify were both run",
+        "reason": "In the bare config no scaffold.py was staged, yet this passed because the model wrote its own cwd/scripts/scaffold.py and ran plan/verify on it. The assertion names a generic filename, not the skill's staged script path or plan schema, so it cannot distinguish the skill's tooling from ad-hoc self-built tooling. If the intent is to measure the skill's lifecycle specifically, pin the script provenance (staged path) or a schema fingerprint of its plan output."
+      },
+      {
+        "assertion": "the audit settled by gate.py verdict with zero gaps",
+        "reason": "gate.py verdict settles whatever findings file it is handed; the model authored out/Billing/.audit-findings.json itself with an empty findings list, so a model that self-declares zero findings gets 'pass' regardless of tree conformance. Expectation 1's on-disk host-project check partially compensates, but the verdict clause alone would pass a nonconformant tree with a hollow findings file."
+      }
+    ],
+    "uncovered": [
+      "gate.py coverage reported both mechanical rules uncovered (manifest_absent: true, uncovered: central-package-management, module-skeleton-structure); no assertion requires the mechanical layer to be audited by hand when the analyzer manifest is missing — here the self-built verify happened to cover them, but nothing in the rubric demands it.",
+      "The headline finding for a baseline comparison: a strong bare model scored 4/4 on this rubric by inventing equivalent tooling on the fly, so this rubric as written measures the outcome (boundary held, skeleton conformant) rather than the skill's contribution; the skill-vs-bare delta on this case will be time/cost/reliability, not rubric pass rate."
+    ],
+    "overall": "All four assertions passed on genuine evidence, but two hinge on artifacts the model can self-author (its own scaffold.py, its own empty findings file), so the rubric does not separate skill-staged tooling from a capable bare model on this case."
+  }
+}

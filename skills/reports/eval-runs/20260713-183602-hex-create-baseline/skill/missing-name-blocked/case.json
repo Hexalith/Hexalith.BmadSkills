@@ -1,0 +1,17 @@
+{
+  "id": "missing-name-blocked",
+  "input": "Run headless. create a new hexalith module for handling invoices, put it in out/. KB at fixtures/kb-mini.",
+  "rubric": [
+    "the run returns blocked without scaffolding anything: no module directory was created under out/ and no plan proceeded to generation",
+    "the reason names the missing module name and type, and no name was invented from the phrase 'handling invoices' \u2014 a module name is user intent, never guessed",
+    "the final message contains a JSON object with status 'blocked' and a reason"
+  ],
+  "state_prefix": null,
+  "files": [
+    "fixtures/kb-mini/meta.md",
+    "fixtures/kb-mini/index.md",
+    "fixtures/kb-mini/entries/module-skeleton-structure.md",
+    "fixtures/kb-mini/entries/central-package-management.md",
+    "fixtures/kb-mini/entries/module-boundary-domain-only.md"
+  ]
+}

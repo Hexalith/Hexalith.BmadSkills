@@ -1,0 +1,75 @@
+{
+  "scanner": "workflow-integrity-prepass",
+  "script": "prepass-workflow-integrity.py",
+  "version": "1.0.0",
+  "skill_path": "skills/hex-create",
+  "timestamp": "2026-07-13T16:26:27.087192+00:00",
+  "status": "warning",
+  "metadata": {
+    "frontmatter": {
+      "name": "hex-create",
+      "description": "Scaffolds new Hexalith module repos correct by construction. Use when the user says 'create a hexalith module', 'scaffold a new module', 'new domain module', 'new technical module', or 'start a new hexalith module repo'."
+    },
+    "sections": [
+      {
+        "level": 2,
+        "title": "Resolution rules",
+        "line": 17
+      },
+      {
+        "level": 2,
+        "title": "Shared machinery",
+        "line": 22
+      },
+      {
+        "level": 2,
+        "title": "The path from nothing",
+        "line": 28
+      },
+      {
+        "level": 2,
+        "title": "Headless",
+        "line": 38
+      },
+      {
+        "level": 2,
+        "title": "Module handoff",
+        "line": 46
+      }
+    ],
+    "workflow_type": "simple-utility"
+  },
+  "stage_summary": {
+    "total_stages": 0,
+    "referenced": [],
+    "actual": [],
+    "missing_stages": [],
+    "orphaned_stages": []
+  },
+  "prompt_details": [],
+  "issues": [
+    {
+      "file": "SKILL.md",
+      "line": 1,
+      "severity": "high",
+      "category": "sections",
+      "issue": "Missing ## Overview section"
+    },
+    {
+      "file": "SKILL.md",
+      "line": 1,
+      "severity": "high",
+      "category": "sections",
+      "issue": "Missing ## On Activation section"
+    }
+  ],
+  "summary": {
+    "total_issues": 2,
+    "by_severity": {
+      "critical": 0,
+      "high": 2,
+      "medium": 0,
+      "low": 0
+    }
+  }
+}

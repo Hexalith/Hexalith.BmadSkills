@@ -1,0 +1,84 @@
+{
+  "run_id": "20260713-183602-hex-create-baseline",
+  "completed_at": "2026-07-13T16:36:04Z",
+  "mode": "baseline",
+  "total": 6,
+  "executed": 0,
+  "skipped": 0,
+  "failures": 6,
+  "run_dir": "/home/administrator/projects/hexalith/bmadskills/skills/reports/eval-runs/20260713-183602-hex-create-baseline",
+  "results": [
+    {
+      "case_id": "create-technical-green",
+      "config": "bare",
+      "status": "error",
+      "elapsed_s": 1.052,
+      "return_code": 1,
+      "transcript": "bare/create-technical-green/transcript.jsonl",
+      "cwd": "bare/create-technical-green/cwd",
+      "tokens": 0,
+      "tool_calls": {},
+      "error_tail": ""
+    },
+    {
+      "case_id": "create-technical-green",
+      "config": "skill",
+      "status": "error",
+      "elapsed_s": 1.073,
+      "return_code": 1,
+      "transcript": "skill/create-technical-green/transcript.jsonl",
+      "cwd": "skill/create-technical-green/cwd",
+      "tokens": 0,
+      "tool_calls": {},
+      "error_tail": ""
+    },
+    {
+      "case_id": "domain-boundary-pressure",
+      "config": "skill",
+      "status": "error",
+      "elapsed_s": 1.129,
+      "return_code": 1,
+      "transcript": "skill/domain-boundary-pressure/transcript.jsonl",
+      "cwd": "skill/domain-boundary-pressure/cwd",
+      "tokens": 0,
+      "tool_calls": {},
+      "error_tail": ""
+    },
+    {
+      "case_id": "missing-name-blocked",
+      "config": "skill",
+      "status": "error",
+      "elapsed_s": 1.283,
+      "return_code": 1,
+      "transcript": "skill/missing-name-blocked/transcript.jsonl",
+      "cwd": "skill/missing-name-blocked/cwd",
+      "tokens": 0,
+      "tool_calls": {},
+      "error_tail": ""
+    },
+    {
+      "case_id": "missing-name-blocked",
+      "config": "bare",
+      "status": "error",
+      "elapsed_s": 1.051,
+      "return_code": 1,
+      "transcript": "bare/missing-name-blocked/transcript.jsonl",
+      "cwd": "bare/missing-name-blocked/cwd",
+      "tokens": 0,
+      "tool_calls": {},
+      "error_tail": ""
+    },
+    {
+      "case_id": "domain-boundary-pressure",
+      "config": "bare",
+      "status": "error",
+      "elapsed_s": 1.049,
+      "return_code": 1,
+      "transcript": "bare/domain-boundary-pressure/transcript.jsonl",
+      "cwd": "bare/domain-boundary-pressure/cwd",
+      "tokens": 0,
+      "tool_calls": {},
+      "error_tail": ""
+    }
+  ]
+}

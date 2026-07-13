@@ -1,0 +1,13 @@
+[
+  {"query": "create a hexalith module for order management", "should_trigger": true},
+  {"query": "scaffold a new module named Billing", "should_trigger": true},
+  {"query": "I need a new domain module for invoicing in my hexalith workspace", "should_trigger": true},
+  {"query": "start a new hexalith module repo for shipping", "should_trigger": true},
+  {"query": "new technical module please — call it Search", "should_trigger": true},
+  {"query": "add a command to the parties module", "should_trigger": false},
+  {"query": "create a new aggregate in my existing hexalith module", "should_trigger": false},
+  {"query": "audit this hexalith repo against current conventions", "should_trigger": false},
+  {"query": "create a PRD for my new module idea", "should_trigger": false},
+  {"query": "create a new BMAD module", "should_trigger": false},
+  {"query": "how should a hexalith module be structured?", "should_trigger": false}
+]

@@ -1,0 +1,15 @@
+{
+  "case_id": "missing-name-blocked",
+  "config": "skill",
+  "status": "ok",
+  "elapsed_s": 23.962,
+  "return_code": 0,
+  "transcript_source": "stdout",
+  "input_tokens": 8,
+  "output_tokens": 1753,
+  "total_tokens": 1761,
+  "tokens_reported": true,
+  "total_steps": 9,
+  "total_tool_calls": 3,
+  "captured_at": "2026-07-13T16:53:32Z"
+}

@@ -1,0 +1,1 @@
+Run headless. create a technical hexalith module named Inventory, target directory out/Inventory. Seeding not requested. KB at fixtures/kb-mini. The hex-enforce skill is not installed; use the audit core at fixtures/hex-enforce-skill.

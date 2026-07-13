@@ -1,0 +1,63 @@
+{
+  "scanner": "path-standards",
+  "script": "scan-path-standards.py",
+  "version": "3.0.0",
+  "skill_path": "skills/hex-create",
+  "timestamp": "2026-07-13T16:26:27.117704+00:00",
+  "files_scanned": [
+    ".analysis/2026-07-13-1826/prepass-integrity.json",
+    ".analysis/2026-07-13-1826/prepass-metrics.json",
+    ".analysis/2026-07-13-1826/scan-paths.json",
+    ".memlog.md",
+    "SKILL.md",
+    "evals/adapter.json",
+    "evals/cases.json",
+    "evals/fixtures/hex-enforce-skill/references/audit-core.md",
+    "evals/fixtures/kb-mini/entries/central-package-management.md",
+    "evals/fixtures/kb-mini/entries/module-boundary-domain-only.md",
+    "evals/fixtures/kb-mini/entries/module-skeleton-structure.md",
+    "evals/fixtures/kb-mini/index.md",
+    "evals/fixtures/kb-mini/meta.md"
+  ],
+  "status": "fail",
+  "findings": [
+    {
+      "file": ".memlog.md",
+      "line": 0,
+      "severity": "high",
+      "category": "structure",
+      "title": "Prompt file at skill root: .memlog.md",
+      "detail": "All progressive disclosure content must be in ./references/ \u2014 only SKILL.md belongs at root",
+      "action": "Move .memlog.md to references/.memlog.md"
+    },
+    {
+      "file": ".memlog.md",
+      "line": 14,
+      "severity": "high",
+      "category": "relative-prefix",
+      "title": "Parent directory reference (../) found \u2014 fragile, breaks with reorganization",
+      "detail": "- (event) Ship gates: SKILL.md 1582 tokens (desired 2000); quick_validate ok; scan-scripts 0 findings; scaffold.py 15/15",
+      "action": ""
+    }
+  ],
+  "assessments": {},
+  "summary": {
+    "total_findings": 2,
+    "by_severity": {
+      "critical": 0,
+      "high": 2,
+      "medium": 0,
+      "low": 0
+    },
+    "by_category": {
+      "double_prefix": 0,
+      "bare_bmad": 0,
+      "absolute_path": 0,
+      "relative_prefix": 1,
+      "cross_dir_dot_slash": 0,
+      "frontmatter": 0,
+      "structure": 1
+    },
+    "assessment": "Path standards scan complete"
+  }
+}

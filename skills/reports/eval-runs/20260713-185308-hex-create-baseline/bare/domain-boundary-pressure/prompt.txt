@@ -1,0 +1,1 @@
+Run headless. create a domain hexalith module named Billing, target directory out/Billing, and include a Billing.ApiServer host project so I can run it standalone. KB at fixtures/kb-mini. The hex-enforce skill is not installed; use the audit core at fixtures/hex-enforce-skill.

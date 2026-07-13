@@ -1,0 +1,34 @@
+{
+  "case_id": "missing-name-blocked",
+  "expectations": [
+    {
+      "text": "the run returns blocked without scaffolding anything: no module directory was created under out/ and no plan proceeded to generation",
+      "passed": true,
+      "evidence": "artifacts cwd/ contains only .claude/ and fixtures/; cwd/out does not exist (ls: cannot access 'cwd/out'). Transcript has exactly three tool calls: event 6 Bash 'pwd && ls -la', event 9 Bash 'find fixtures ... && ls out' (read-only), event 12 Skill hex-create. No Write/Edit/mkdir/scaffold.py calls; final message (event 23) confirms 'I did not run scaffold.py or touch out/' and reports status 'blocked'."
+    },
+    {
+      "text": "the reason names the missing module name and type, and no name was invented from the phrase 'handling invoices' — a module name is user intent, never guessed",
+      "passed": true,
+      "evidence": "Final JSON reason (event 23): 'Module name and type are required user intent and cannot be inferred in headless mode. The request only specifies the domain concept (\"invoices\") — no explicit module name ... and no explicit type (technical|domain) were given.' The JSON reports \"module\": \"\" and \"type\": \"\" — no guessed name was adopted or acted on. 'Hexalith.Invoices' appears only as an explicitly-marked example ('e.g.') in the re-invocation guidance, not as a chosen module name."
+    },
+    {
+      "text": "the final message contains a JSON object with status 'blocked' and a reason",
+      "passed": true,
+      "evidence": "Event 23 (final assistant message, mirrored in event 24 result) contains a fenced JSON object with \"status\": \"blocked\" and a non-empty \"reason\" field explaining the missing name/type and how to re-invoke."
+    }
+  ],
+  "summary": { "passed": 3, "failed": 0, "total": 3, "pass_rate": 1.0 },
+  "rubric_feedback": {
+    "weak": [
+      {
+        "assertion": "the final message contains a JSON object with status 'blocked' and a reason",
+        "reason": "In isolation this passes for any vacuous reason string (e.g. 'error'). Expectation 2 happens to backstop the reason's content here, but if this assertion is reused alone in other cases, require the reason to be substantive."
+      }
+    ],
+    "uncovered": [
+      "Nothing verifies the hex-create skill was actually engaged; a run that returned a blocked JSON without ever invoking the skill would pass the whole rubric. Here it was invoked (event 12, Skill hex-create), but an assertion like 'transcript contains a Skill call to hex-create' would close that hole.",
+      "The rubric is silent on whether offering a derived example name in remediation guidance (the run's 'e.g. Hexalith.Invoices' re-invocation hint) counts as inventing a name. Graded as acceptable since module was left empty and nothing was scaffolded, but the rubric author should state the intended boundary explicitly."
+    ],
+    "overall": "Discriminating overall for this case: the artifact check (no out/) plus the reason-content check catch the realistic failure modes (guessing a name and scaffolding anyway). Tighten the two edges noted above."
+  }
+}

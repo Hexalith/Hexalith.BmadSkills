@@ -1,0 +1,80 @@
+{
+  "scanner": "workflow-integrity-prepass",
+  "script": "prepass-workflow-integrity.py",
+  "version": "1.0.0",
+  "skill_path": "skills/hex-extend",
+  "timestamp": "2026-07-13T15:44:44.105108+00:00",
+  "status": "warning",
+  "metadata": {
+    "frontmatter": {
+      "name": "hex-extend",
+      "description": "Adds conformant pieces to existing Hexalith modules. Use when the user says 'extend this module', 'add an aggregate', 'add a command', 'add a projection', 'add a request handler', or 'add a UI page'."
+    },
+    "sections": [
+      {
+        "level": 2,
+        "title": "Resolution rules",
+        "line": 17
+      },
+      {
+        "level": 2,
+        "title": "Shared machinery",
+        "line": 22
+      },
+      {
+        "level": 2,
+        "title": "Routing",
+        "line": 28
+      },
+      {
+        "level": 2,
+        "title": "The route skeleton",
+        "line": 32
+      },
+      {
+        "level": 2,
+        "title": "Headless",
+        "line": 44
+      },
+      {
+        "level": 2,
+        "title": "Module handoff",
+        "line": 52
+      }
+    ],
+    "workflow_type": "simple-utility"
+  },
+  "stage_summary": {
+    "total_stages": 0,
+    "referenced": [],
+    "actual": [],
+    "missing_stages": [],
+    "orphaned_stages": []
+  },
+  "prompt_details": [],
+  "issues": [
+    {
+      "file": "SKILL.md",
+      "line": 1,
+      "severity": "high",
+      "category": "sections",
+      "issue": "Missing ## Overview section"
+    },
+    {
+      "file": "SKILL.md",
+      "line": 1,
+      "severity": "high",
+      "category": "sections",
+      "issue": "Missing ## On Activation section"
+    }
+  ],
+  "summary": {
+    "total_issues": 2,
+    "by_severity": {
+      "critical": 0,
+      "high": 2,
+      "medium": 0,
+      "low": 0
+    }
+  }
+}

@@ -1,6 +1,6 @@
 ---
 name: hex-extend
-description: Adds conformant pieces to existing Hexalith modules. Use when the user says 'extend this module', 'add an aggregate', 'add a command', 'add a projection', 'add a request handler', or 'add a UI page'.
+description: Adds conformant pieces to existing Hexalith modules. Use when the user says 'extend this module', 'add an aggregate', 'add a command', 'add an event', 'add a projection', 'add a request handler', or 'add a UI page'.
 ---
 
 # hex-extend
@@ -16,14 +16,13 @@ Converse in `{communication_language}`; write run summaries and gap filings in `
 
 ## Resolution rules
 
-- Bare paths (e.g. `evals/cases.json`) resolve from this skill's installed directory.
 - `{project-root}` → the project working directory.
 
 ## Shared machinery
 
-KB root defaults to `{project-root}/_bmad/hex/knowledge/`; an explicit path in the invocation overrides it. Start from `index.md` and load only the entries the route touches — pattern, placement, naming, and wiring all come from there, never from model memory of how .NET usually does it: a memorized pattern is exactly the drift this module exists to kill. hex-absorb is the KB's only writer; the one write surface here is `intake/` (source: extend). No KB → blocked (hex-absorb's seed intent founds it).
+KB root defaults to `{project-root}/_bmad/hex/knowledge/`; an explicit path in the invocation overrides it. Start from `index.md` and load only the entries the route touches — pattern, placement, naming, and wiring all come from there, never from model memory of how .NET usually does it: a memorized pattern is exactly the drift this module exists to kill. hex-absorb is the KB's only writer; the one write surface here is `intake/` (source: extend) — shape from the sibling hex-absorb skill's `assets/intake-template.md`, checked after filing with its `scripts/kb.py validate`. No KB → blocked (hex-absorb's seed intent founds it).
 
-The verify gate is the shared audit core shipped with the sibling hex-enforce skill, installed beside this one: load its `references/audit-core.md` and run its `scripts/gate.py` from that skill's directory — scope `diff` (the addition), layer `judgment`, the same call as hex-enforce's gate (the green build already enforces analyzer-covered mechanical rules). An explicit audit-core path in the invocation overrides the sibling lookup. Neither resolvable: interactive may proceed with the verdict marked `unsettled — run hex-enforce`; headless returns blocked.
+The verify gate is the shared audit core shipped with the sibling hex-enforce skill, installed beside this one: load its `references/audit-core.md` and run its `scripts/gate.py` from that skill's directory — scope `diff` (the addition), layer `judgment`, the same call as hex-enforce's gate (the green build already enforces analyzer-covered mechanical rules). An explicit audit-core path in the invocation overrides the sibling lookup. When the audit core cannot be resolved, interactive proceeds with the verdict marked `unsettled — run hex-enforce`; when it resolves but script execution is unavailable, do the checks by hand against its schemas and mark the verdict `unsettled by gate.py`. Headless returns blocked in both cases — an unsettled verdict cannot claim conformance.
 
 ## Routing
 
@@ -33,20 +32,20 @@ Route on the user's words: add an **aggregate** (with its events), a **command**
 
 Every route walks the same skeleton; the KB fills in the route's specifics.
 
-**Locate** — the target repo is the working tree unless the invocation points elsewhere; identify the owning module, aggregate, and destination projects from the repo layout plus the KB's placement conventions. Baseline before generating: build and test the untouched repo — a green gate cannot tell new breakage from pre-existing, so a red baseline stops the run (surface it; headless returns blocked).
+**Locate** — the target repo is the working tree unless the invocation points elsewhere; identify the owning module, aggregate, and destination projects from the repo layout plus the KB's placement conventions. A piece that already exists under the requested name is surfaced, never overwritten (headless: blocked naming the collision). Record the as-found state before touching anything — `git status --porcelain` plus a `git stash create` snapshot (no git repo → `git init` and commit first; a restore point must exist); a dirty tree also pollutes the diff scope, so confirm it interactively and block headless. Then baseline: build and test the untouched repo — a green gate cannot tell new breakage from pre-existing, so a red baseline stops the run (surface it; headless returns blocked).
 
 **Generate** — the code and its tests, every shape taken from KB entries, convention ids collected for the summary. Where the KB is silent on something the route needs, file the gap and mark the uncovered lines in the summary rather than silently improvising — the gate can only check what the KB knows, so uncited shapes are exactly where drift hides.
 
 **Wire** — the registrations the KB names for the route. Unwired code that compiles is the silent failure the KB's wiring entries exist to prevent; treat them as mandatory reading before calling a route done.
 
-**Verify** — the green gate: build, tests, then the diff-scoped audit settled with `gate.py verdict` — never by hand. Iterate to green interactively; headless, a gate that will not settle green restores every file this run created or touched and returns blocked with the failure — never leave the repo red. Deliver the change uncommitted in the working tree with the summary citing its convention ids; commit only when asked.
+**Verify** — the green gate: build, tests, then the diff-scoped audit settled with `gate.py verdict` while it can run. Iterate to green interactively; headless, a gate that will not settle green restores the tree from Locate's as-found snapshot — the touched set comes from diffing against it, never from recall — and returns blocked with the failure; never leave the repo red. Deliver the change uncommitted in the working tree with the summary citing its convention ids; commit only when asked.
 
 ## Headless
 
-`--headless` / `-H`: never ask — the surface hex-create and bmad-loop call. Requires an unambiguous route and names in the invocation. Return blocked when the KB or the audit core cannot be resolved, the route or names are ambiguous, the target repo cannot be identified, the baseline is red, the gate will not settle green (the addition is restored first), or script execution is unavailable (an unsettled verdict cannot claim conformance). End with:
+`--headless` / `-H`: never ask — the surface hex-create and bmad-loop call. Requires an unambiguous route and names in the invocation, plus the piece's behavior sketch or payload where the route needs one: without it a command or event may take the KB-minimal shape, an aggregate returns blocked — behavior is user intent, not a KB convention, so it is never inferred. Every inference made without the user (route, names, placement) is returned in `assumptions`; when the KB's `intake/` is not durably writable, each `gaps_filed` entry carries the gap's full content inline instead of a path, so the caller can re-file. Return blocked when the KB or the audit core cannot be resolved, the route or names are ambiguous, the target repo cannot be identified, the working tree is dirty, the named piece already exists, the baseline is red, the gate will not settle green (the tree is restored first), or script execution is unavailable. End with:
 
 ```json
-{"status": "complete|blocked", "route": "aggregate|command|event|projection|request-handler|ui-page", "files": [], "verdict": "pass|n/a", "citations": [], "gaps_filed": [], "reason": "<only when blocked>"}
+{"status": "complete|blocked", "route": "aggregate|command|event|projection|request-handler|ui-page", "files": [], "verdict": "pass|n/a", "citations": [], "assumptions": [], "gaps_filed": [], "reason": "<only when blocked>"}
 ```
 
 ## Module handoff

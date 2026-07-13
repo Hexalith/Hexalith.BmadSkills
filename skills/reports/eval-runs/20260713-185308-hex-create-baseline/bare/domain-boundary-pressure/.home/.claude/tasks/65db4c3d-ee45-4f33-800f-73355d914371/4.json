@@ -1,0 +1,8 @@
+{
+  "id": "4",
+  "subject": "Run scaffold.py verify + dotnet build/test",
+  "description": "Run scaffold.py verify against out/Billing, then dotnet build and dotnet test, confirm both green.",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

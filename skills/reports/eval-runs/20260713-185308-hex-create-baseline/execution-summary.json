@@ -1,0 +1,111 @@
+{
+  "run_id": "20260713-185308-hex-create-baseline",
+  "completed_at": "2026-07-13T16:58:41Z",
+  "mode": "baseline",
+  "total": 6,
+  "executed": 6,
+  "skipped": 0,
+  "failures": 0,
+  "run_dir": "/home/administrator/projects/hexalith/bmadskills/skills/reports/eval-runs/20260713-185308-hex-create-baseline",
+  "results": [
+    {
+      "case_id": "missing-name-blocked",
+      "config": "skill",
+      "status": "ok",
+      "elapsed_s": 23.962,
+      "return_code": 0,
+      "transcript": "skill/missing-name-blocked/transcript.jsonl",
+      "cwd": "skill/missing-name-blocked/cwd",
+      "tokens": 1761,
+      "tool_calls": {
+        "Bash": 2,
+        "Skill": 1
+      },
+      "error_tail": ""
+    },
+    {
+      "case_id": "missing-name-blocked",
+      "config": "bare",
+      "status": "ok",
+      "elapsed_s": 35.441,
+      "return_code": 0,
+      "transcript": "bare/missing-name-blocked/transcript.jsonl",
+      "cwd": "bare/missing-name-blocked/cwd",
+      "tokens": 2406,
+      "tool_calls": {
+        "Bash": 4,
+        "Read": 1
+      },
+      "error_tail": ""
+    },
+    {
+      "case_id": "domain-boundary-pressure",
+      "config": "skill",
+      "status": "ok",
+      "elapsed_s": 213.043,
+      "return_code": 0,
+      "transcript": "skill/domain-boundary-pressure/transcript.jsonl",
+      "cwd": "skill/domain-boundary-pressure/cwd",
+      "tokens": 16493,
+      "tool_calls": {
+        "Skill": 1,
+        "Bash": 25,
+        "Read": 7,
+        "Write": 2
+      },
+      "error_tail": ""
+    },
+    {
+      "case_id": "create-technical-green",
+      "config": "bare",
+      "status": "ok",
+      "elapsed_s": 226.73,
+      "return_code": 0,
+      "transcript": "bare/create-technical-green/transcript.jsonl",
+      "cwd": "bare/create-technical-green/cwd",
+      "tokens": 12900,
+      "tool_calls": {
+        "Bash": 23,
+        "Read": 8,
+        "Write": 7
+      },
+      "error_tail": ""
+    },
+    {
+      "case_id": "create-technical-green",
+      "config": "skill",
+      "status": "ok",
+      "elapsed_s": 306.555,
+      "return_code": 0,
+      "transcript": "skill/create-technical-green/transcript.jsonl",
+      "cwd": "skill/create-technical-green/cwd",
+      "tokens": 19418,
+      "tool_calls": {
+        "Bash": 38,
+        "Skill": 1,
+        "Read": 1
+      },
+      "error_tail": ""
+    },
+    {
+      "case_id": "domain-boundary-pressure",
+      "config": "bare",
+      "status": "ok",
+      "elapsed_s": 273.394,
+      "return_code": 0,
+      "transcript": "bare/domain-boundary-pressure/transcript.jsonl",
+      "cwd": "bare/domain-boundary-pressure/cwd",
+      "tokens": 24824,
+      "tool_calls": {
+        "Bash": 15,
+        "Read": 9,
+        "ToolSearch": 1,
+        "TaskCreate": 6,
+        "TaskUpdate": 11,
+        "Write": 8,
+        "Edit": 1
+      },
+      "error_tail": ""
+    }
+  ]
+}

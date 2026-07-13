@@ -1,0 +1,8 @@
+{
+  "id": "1",
+  "subject": "Write scaffold.py with plan/verify subcommands",
+  "description": "Deterministic script mirroring gate.py's philosophy: `plan` reads KB + request, declares module skeleton and flags/excludes non-domain projects (e.g. ApiServer) citing module-boundary-domain-only; `verify` checks the produced target dir against KB mechanical rules (slnx completeness, csproj settings, Directory.Packages.props, .gitignore).",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}
