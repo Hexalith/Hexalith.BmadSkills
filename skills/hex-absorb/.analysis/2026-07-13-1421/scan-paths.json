@@ -1,0 +1,56 @@
+{
+  "scanner": "path-standards",
+  "script": "scan-path-standards.py",
+  "version": "3.0.0",
+  "skill_path": "skills/hex-absorb",
+  "timestamp": "2026-07-13T12:21:08.793294+00:00",
+  "files_scanned": [
+    ".analysis/2026-07-13-1421/prepass-integrity.json",
+    ".analysis/2026-07-13-1421/prepass-metrics.json",
+    ".analysis/2026-07-13-1421/scan-paths.json",
+    ".memlog.md",
+    "SKILL.md",
+    "assets/entry-template.md",
+    "assets/intake-template.md",
+    "evals/cases.json",
+    "evals/fixtures/framework-src/docs/module-structure.md",
+    "evals/fixtures/kb-mini/entries/aggregate-handle-signature.md",
+    "evals/fixtures/kb-mini/entries/projection-registration.md",
+    "evals/fixtures/kb-mini/entries/ulid-identifiers.md",
+    "evals/fixtures/kb-mini/intake/request-handler-location.md",
+    "evals/fixtures/kb-mini/meta.md",
+    "evals/fixtures/release-notes-1.73.md"
+  ],
+  "status": "fail",
+  "findings": [
+    {
+      "file": ".memlog.md",
+      "line": 0,
+      "severity": "high",
+      "category": "structure",
+      "title": "Prompt file at skill root: .memlog.md",
+      "detail": "All progressive disclosure content must be in ./references/ \u2014 only SKILL.md belongs at root",
+      "action": "Move .memlog.md to references/.memlog.md"
+    }
+  ],
+  "assessments": {},
+  "summary": {
+    "total_findings": 1,
+    "by_severity": {
+      "critical": 0,
+      "high": 1,
+      "medium": 0,
+      "low": 0
+    },
+    "by_category": {
+      "double_prefix": 0,
+      "bare_bmad": 0,
+      "absolute_path": 0,
+      "relative_prefix": 0,
+      "cross_dir_dot_slash": 0,
+      "frontmatter": 0,
+      "structure": 1
+    },
+    "assessment": "Path standards scan complete"
+  }
+}

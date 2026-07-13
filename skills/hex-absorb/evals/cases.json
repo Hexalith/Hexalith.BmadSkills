@@ -1,0 +1,71 @@
+[
+  {
+    "id": "ingest-release",
+    "input": "Run headless. absorb the framework release into the KB at fixtures/kb-mini — release notes are at fixtures/release-notes-1.73.md, framework source is the local clone at fixtures/framework-src (no gh here)",
+    "rubric": [
+      "a new entry file exists under fixtures/kb-mini/entries/ describing AddProjectionHandler registration, with since: 1.73.0 and provenance referencing the 1.73.0 release",
+      "fixtures/kb-mini/entries/projection-registration.md still exists and now carries until: 1.73.0, and the new entry lists projection-registration in supersedes",
+      "fixtures/kb-mini/meta.md targets_framework now references 1.73",
+      "the changes are committed on a git branch whose name starts with hex-absorb/ (git initialized first if the workspace had no repo), not applied without version control",
+      "the transcript shows kb.py validate run against fixtures/kb-mini reporting ok true after the changes",
+      "the final message contains a JSON object with status 'complete' and entries_changed >= 2",
+      "no entry describes a change absent from the release notes (the EventStore snapshot bug fixes produce no entry)"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/aggregate-handle-signature.md",
+      "fixtures/kb-mini/entries/projection-registration.md",
+      "fixtures/kb-mini/intake/request-handler-location.md",
+      "fixtures/release-notes-1.73.md",
+      "fixtures/framework-src/Hexalith.Domains/IDomainAggregate.cs",
+      "fixtures/framework-src/Hexalith.Commons/UniqueIdHelper.cs",
+      "fixtures/framework-src/HexalithApp/ProjectionSetup.cs",
+      "fixtures/framework-src/docs/module-structure.md"
+    ]
+  },
+  {
+    "id": "verify-against-source",
+    "input": "Run headless. verify the KB at fixtures/kb-mini against source — framework source is the local clone at fixtures/framework-src. check every entry",
+    "rubric": [
+      "the mismatch on aggregate-handle-signature is flagged: the entry claims ExecutionResult but fixtures/framework-src/Hexalith.Domains/IDomainAggregate.cs shows DomainResult, and the finding cites that source file",
+      "ulid-identifiers and projection-registration get verified stamped with an ISO date, confirmed against UniqueIdHelper.cs and ProjectionSetup.cs",
+      "the Statement of aggregate-handle-signature is not silently rewritten: any correction appears as a clearly-marked proposal on the review branch and the finding is reported",
+      "all changes sit on a git branch whose name starts with hex-absorb/, not applied without version control",
+      "the final message contains a JSON object whose findings array names the aggregate-handle-signature mismatch"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/aggregate-handle-signature.md",
+      "fixtures/kb-mini/entries/projection-registration.md",
+      "fixtures/framework-src/Hexalith.Domains/IDomainAggregate.cs",
+      "fixtures/framework-src/Hexalith.Commons/UniqueIdHelper.cs",
+      "fixtures/framework-src/HexalithApp/ProjectionSetup.cs",
+      "fixtures/framework-src/docs/module-structure.md"
+    ]
+  },
+  {
+    "id": "process-intake",
+    "input": "Run headless. process KB intake for the KB at fixtures/kb-mini. framework source: fixtures/framework-src",
+    "rubric": [
+      "a new entry exists under fixtures/kb-mini/entries/ stating that request handlers live in the Application-layer <Module>.Requests package, with provenance pointing at the framework module-structure doc and all required frontmatter fields present",
+      "the intake file fixtures/kb-mini/intake/request-handler-location.md is resolved in the same change: status flipped to resolved or the file removed",
+      "the new entry's Statement does not invent details absent from fixtures/framework-src/docs/module-structure.md",
+      "the transcript shows kb.py validate reporting ok true after the change",
+      "the final message contains a JSON object with status 'complete'"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/aggregate-handle-signature.md",
+      "fixtures/kb-mini/entries/projection-registration.md",
+      "fixtures/kb-mini/intake/request-handler-location.md",
+      "fixtures/framework-src/Hexalith.Commons/UniqueIdHelper.cs",
+      "fixtures/framework-src/docs/module-structure.md"
+    ]
+  }
+]
