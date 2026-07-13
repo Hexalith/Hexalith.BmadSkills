@@ -1,0 +1,33 @@
+code: hex
+name: "BMAD Hexalith Module"
+description: "LLM skills to develop and maintain Hexalith modules: create, extend, migrate, and enforce framework conventions."
+module_version: 1.0.0
+default_selected: false
+module_greeting: >
+  The Hexalith module is installed! First step: seed the knowledge base — say 'seed the hexalith KB' (hex-absorb);
+  every other skill reads from it. Then: hex-consult answers conformance questions, hex-enforce gates diffs,
+  hex-migrate audits and upgrades repos, hex-extend adds conformant pieces, and hex-create scaffolds new module repos.
+
+hex_framework_source:
+  prompt: "Where should skills read Hexalith framework sources? (GitHub org name or local workspace path)"
+  default: "Hexalith"
+  result: "{value}"
+  user_setting: true
+
+hex_fleet_manifest:
+  prompt: "Path to the fleet manifest listing your Hexalith module repos"
+  default: "{project-root}/hex-fleet.yaml"
+  example: "A YAML file listing repo paths or GitHub slugs — hex-migrate's fleet audit reads it. This is a file path, not a directory."
+  result: "{value}"
+  user_setting: true
+
+hex_verbosity:
+  prompt: "Default explanation style for conformance answers?"
+  default: "explain"
+  single-select:
+    - value: "terse"
+      label: "Terse — expert mode: citations and the answer, nothing else"
+    - value: "explain"
+      label: "Explain — teach as you go, for adopters"
+  result: "{value}"
+  user_setting: true
