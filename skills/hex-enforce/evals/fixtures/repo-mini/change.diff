@@ -1,0 +1,28 @@
+diff --git a/src/Parties.Domain/PartyRegistration.cs b/src/Parties.Domain/PartyRegistration.cs
+index 3f1c2aa..9d04b7e 100644
+--- a/src/Parties.Domain/PartyRegistration.cs
++++ b/src/Parties.Domain/PartyRegistration.cs
+@@ -4,11 +4,25 @@
+
+ namespace Parties.Domain;
+
++using Microsoft.EntityFrameworkCore;
++
+ /// <summary>Registers a new party.</summary>
+ public static class PartyRegistration
+ {
+     public static string NewRegistrationId()
+     {
+-        string id = UniqueIdHelper.GenerateUniqueStringId();
++        string id = Guid.NewGuid().ToString();
+         return id;
+     }
+ }
++
++/// <summary>Persistence context for parties.</summary>
++public class PartiesDbContext : DbContext
++{
++    public DbSet<PartyRecord> Parties => Set<PartyRecord>();
++}
++
++public record PartyRecord(string Id, string Name);

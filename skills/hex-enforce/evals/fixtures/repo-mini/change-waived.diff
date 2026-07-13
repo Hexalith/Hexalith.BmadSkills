@@ -1,0 +1,18 @@
+diff --git a/src/Parties.Domain/RegistrationId.cs b/src/Parties.Domain/RegistrationId.cs
+new file mode 100644
+index 0000000..b2a91cf
+--- /dev/null
++++ b/src/Parties.Domain/RegistrationId.cs
+@@ -0,0 +1,12 @@
++// <copyright file="RegistrationId.cs" company="ITANEO">
++// Copyright (c) ITANEO. All rights reserved.
++// </copyright>
++
++namespace Parties.Domain;
++
++/// <summary>Identifier factory for registrations.</summary>
++public static class RegistrationId
++{
++    /// <summary>Creates a new registration identifier.</summary>
++    public static string Next() => Guid.NewGuid().ToString();
++}

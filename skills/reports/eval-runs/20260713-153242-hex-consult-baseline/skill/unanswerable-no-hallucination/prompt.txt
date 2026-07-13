@@ -1,0 +1,1 @@
+Run headless. consult hexalith: what is the required retry policy for outbound HTTP calls from a module? KB at fixtures/kb-mini, framework source at fixtures/framework-src

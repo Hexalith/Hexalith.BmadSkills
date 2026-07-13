@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "verdict": "fail",
+  "scope": "repo",
+  "layer": "full",
+  "target": "repos/Hexalith.Parties",
+  "findings": [
+    {
+      "id": "ulid-identifiers",
+      "severity": "fail",
+      "tier": "mechanical",
+      "file": "src/Parties.Domain/PartyRegistration.cs",
+      "line": 13,
+      "evidence": "Id = Guid.NewGuid().ToString();",
+      "explanation": "GUID generated where a ULID from UniqueIdHelper.GenerateUniqueStringId() is required"
+    },
+    {
+      "id": "aggregate-pure-functions",
+      "severity": "fail",
+      "tier": "structural",
+      "file": "src/Parties.Domain/PartyRegistration.cs",
+      "line": 19,
+      "evidence": "public void Apply(PartyRegistered @event)",
+      "explanation": "mutating Apply follows aggregate-mutable-apply, superseded in 1.70.0 — the aggregate must become a pure function pair returning new state"
+    }
+  ],
+  "waived": [],
+  "analyzer_owned": [],
+  "expired_waivers": [],
+  "counts": { "fail": 2, "warn": 0, "waived": 0, "analyzer_owned": 0 },
+  "staleness": {
+    "targets_framework": ">= 1.72",
+    "repo_version": "1.68.0",
+    "packages_props": "repos/Hexalith.Parties/Directory.Packages.props",
+    "comparable": true,
+    "kb_lags_repo": false,
+    "repo_lags_target": true
+  }
+}

@@ -1,0 +1,1 @@
+Run headless. consult hexalith: what identifier format do entities and commands use? KB at fixtures/kb-mini

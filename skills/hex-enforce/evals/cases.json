@@ -1,0 +1,64 @@
+[
+  {
+    "id": "gate-fails-cited",
+    "input": "Run headless. enforce hexalith conventions: gate the diff fixtures/repo-mini/change.diff against the repo at fixtures/repo-mini. KB at fixtures/kb-mini.",
+    "rubric": [
+      "the verdict is fail, with a finding citing ulid-identifiers at src/Parties.Domain/PartyRegistration.cs quoting the Guid.NewGuid() line, and a finding citing module-boundary-domain-only for the EntityFrameworkCore/DbContext persistence added inside a Domain project",
+      "the mechanical ulid-identifiers rule was reviewed by the LLM layer because no analyzer-rules.json manifest exists, and the output names the missing manifest / zero analyzer coverage rather than silently skipping mechanical rules",
+      "the verdict was settled by running scripts/gate.py verdict on a findings JSON (not computed by hand), and every finding carries file, evidence, and explanation",
+      "no finding cites a convention id that does not exist in fixtures/kb-mini/entries/",
+      "the final message contains a JSON object with status 'complete' and verdict 'fail'"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/index.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/projection-registration.md",
+      "fixtures/kb-mini/entries/module-boundary-domain-only.md",
+      "fixtures/repo-mini/change.diff",
+      "fixtures/repo-mini/src/Parties.Domain/PartyRegistration.cs",
+      "fixtures/repo-mini/Directory.Packages.props"
+    ]
+  },
+  {
+    "id": "waiver-respected-expiry-bites",
+    "input": "Run headless. enforce hexalith conventions: gate the diff fixtures/repo-mini/change-waived.diff against the repo at fixtures/repo-mini. KB at fixtures/kb-mini.",
+    "rubric": [
+      "the Guid.NewGuid() violation of ulid-identifiers in the diff is detected but suppressed by the active waiver from fixtures/repo-mini/hex-waivers.yaml — it appears as waived with the waiver's reason (HX-123 rewrite), not as a failing finding",
+      "the expired projection-registration waiver (review 2026-01-01) surfaces as a warn finding saying to renew or fix; it suppresses nothing",
+      "the verdict is pass (no unwaived failing finding remains), and the waived deviation is visible in the verdict summary rather than silently dropped",
+      "the final message contains a JSON object with status 'complete', verdict 'pass', and counts showing 1 waived"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/index.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/projection-registration.md",
+      "fixtures/kb-mini/entries/module-boundary-domain-only.md",
+      "fixtures/repo-mini/change-waived.diff",
+      "fixtures/repo-mini/hex-waivers.yaml",
+      "fixtures/repo-mini/Directory.Packages.props"
+    ]
+  },
+  {
+    "id": "coverage-map",
+    "input": "Run headless. check analyzer coverage for the repo at fixtures/repo-mini. KB at fixtures/kb-mini.",
+    "rubric": [
+      "the report names ulid-identifiers as analyzer-covered (HEX0001) and projection-registration as uncovered — the analyzer backlog; module-boundary-domain-only appears in neither list because it is a judgment rule",
+      "the HEX0002 mapping to slnx-solution-format is flagged as pointing at no KB entry (analyzer and KB have drifted)",
+      "the partition comes from running scripts/gate.py coverage, not from estimating by reading files",
+      "the final message contains a JSON object with status 'complete' and intent 'coverage'"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/index.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/projection-registration.md",
+      "fixtures/kb-mini/entries/module-boundary-domain-only.md",
+      "fixtures/repo-mini/analyzer-rules.json"
+    ]
+  }
+]

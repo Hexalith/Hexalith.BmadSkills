@@ -1,0 +1,15 @@
+{
+  "run_id": "20260713-153242-hex-consult-baseline",
+  "cases_file": "/home/administrator/projects/hexalith/bmadskills/skills/hex-consult/evals/cases.json",
+  "skill_path": "/home/administrator/projects/hexalith/bmadskills/skills/hex-consult",
+  "variant_path": null,
+  "mode": "baseline",
+  "configs": [
+    "skill",
+    "bare"
+  ],
+  "runs_per_case": 1,
+  "adapter": ".claude/skills/bmad-eval-runner/assets/adapter-claude-code.json",
+  "started_at": "2026-07-13T13:32:42Z",
+  "case_count": 4
+}

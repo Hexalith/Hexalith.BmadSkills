@@ -1,0 +1,18 @@
+{
+  "id": "answer-cited",
+  "input": "Run headless. consult hexalith: what identifier format do entities and commands use? KB at fixtures/kb-mini",
+  "rubric": [
+    "the answer states identifiers are ULID strings generated through UniqueIdHelper.GenerateUniqueStringId() and that GUIDs / database-generated integer ids are forbidden",
+    "the answer cites the ulid-identifiers KB entry and carries its trust signal: verified 2026-07-01",
+    "no intake file is created under fixtures/kb-mini/intake/ (the KB answered; there is no gap)",
+    "the final message contains a JSON object with status 'complete' and a citations array naming ulid-identifiers"
+  ],
+  "state_prefix": null,
+  "files": [
+    "fixtures/kb-mini/meta.md",
+    "fixtures/kb-mini/index.md",
+    "fixtures/kb-mini/entries/ulid-identifiers.md",
+    "fixtures/kb-mini/entries/aggregate-result-executionresult.md",
+    "fixtures/kb-mini/entries/aggregate-result-domainresult.md"
+  ]
+}

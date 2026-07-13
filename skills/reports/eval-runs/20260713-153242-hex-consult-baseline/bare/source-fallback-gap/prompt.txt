@@ -1,0 +1,1 @@
+Run headless. consult hexalith: where do localization resources live in a module? KB at fixtures/kb-mini, framework source is the local clone at fixtures/framework-src

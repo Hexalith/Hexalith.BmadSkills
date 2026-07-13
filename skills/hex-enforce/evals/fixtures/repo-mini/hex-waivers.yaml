@@ -1,0 +1,8 @@
+# hex-waivers.yaml — intentional deviations from Hexalith conventions for this repo.
+waivers:
+  - id: ulid-identifiers
+    reason: legacy import layer keeps GUID ids until the HX-123 rewrite lands
+    review: 2099-01-01
+  - id: projection-registration
+    reason: transitional manual wiring during the projections split
+    review: 2026-01-01

@@ -1,0 +1,73 @@
+[
+  {
+    "id": "audit-tiered-gap-report",
+    "input": "Run headless. audit this repo against conventions: the repo at fixtures/repo-lagging. KB at fixtures/kb-mini. The hex-enforce skill is not installed; use the audit core at fixtures/hex-enforce-skill. Write reports under reports/.",
+    "rubric": [
+      "the audit ran repo scope, full layer; the verdict was settled by running gate.py verdict on a findings JSON (not computed by hand), tiers were validated with migrate.py tiers, and the report was rendered with migrate.py report — a gap-report HTML and JSON pair exists under reports/",
+      "findings include ulid-identifiers tiered mechanical at src/Parties.Domain/PartyRegistration.cs quoting the Guid.NewGuid() line, and aggregate-pure-functions tiered structural — with the mutating Apply recognized as following the superseded aggregate-mutable-apply from-state, not just called a violation",
+      "module-boundary-domain-only is found and tiered judgment for the ADO.NET persistence in src/Parties.Domain/PartyStore.cs — never mechanical",
+      "staleness reports the repo's 1.68.0 lagging the KB target >= 1.72",
+      "no finding cites a convention id that does not exist in fixtures/kb-mini/entries/; the final message contains a JSON object with status 'complete', intent 'audit', and counts showing 1 mechanical, 1 structural, 1 judgment"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/index.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/module-boundary-domain-only.md",
+      "fixtures/kb-mini/entries/aggregate-pure-functions.md",
+      "fixtures/kb-mini/entries/aggregate-mutable-apply.md",
+      "fixtures/repo-lagging/Directory.Packages.props",
+      "fixtures/repo-lagging/.gitignore",
+      "fixtures/repo-lagging/src/Parties.Domain/Parties.Domain.csproj",
+      "fixtures/repo-lagging/src/Parties.Domain/PartyRegistration.cs",
+      "fixtures/repo-lagging/src/Parties.Domain/PartyStore.cs",
+      "fixtures/repo-lagging/src/Parties.Domain/FrameworkStubs.cs",
+      "fixtures/hex-enforce-skill/references/audit-core.md",
+      "fixtures/hex-enforce-skill/scripts/gate.py"
+    ]
+  },
+  {
+    "id": "drive-mechanical-only-headless",
+    "input": "Run headless. drive the upgrade of the repo at fixtures/repo-lagging. KB at fixtures/kb-mini. The hex-enforce skill is not installed; use the audit core at fixtures/hex-enforce-skill. Write reports under reports/.",
+    "rubric": [
+      "no gap report existed, so the audit ran first; drive then touched only the mechanical tier: Guid.NewGuid() id generation replaced with UniqueIdHelper.GenerateUniqueStringId() (Hexalith.Commons), while the mutating Apply signature and PartyStore.cs were left untouched",
+      "the repo had no git history, so it was git init'ed with a baseline commit before any change; work happened on a hex-migrate/* branch and the mechanical fix is its own commit",
+      "the baseline was verified green (dotnet build) before any change, and the green gate ran again after the applied step — the repo builds at the end",
+      "the structural aggregate-pure-functions and judgment module-boundary-domain-only findings were escalated rather than applied — the final JSON's escalations name both findings with their tiers",
+      "the final message contains a JSON object with status 'complete', intent 'drive', and applied of at least 1"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/index.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/module-boundary-domain-only.md",
+      "fixtures/kb-mini/entries/aggregate-pure-functions.md",
+      "fixtures/kb-mini/entries/aggregate-mutable-apply.md",
+      "fixtures/repo-lagging/Directory.Packages.props",
+      "fixtures/repo-lagging/.gitignore",
+      "fixtures/repo-lagging/src/Parties.Domain/Parties.Domain.csproj",
+      "fixtures/repo-lagging/src/Parties.Domain/PartyRegistration.cs",
+      "fixtures/repo-lagging/src/Parties.Domain/PartyStore.cs",
+      "fixtures/repo-lagging/src/Parties.Domain/FrameworkStubs.cs",
+      "fixtures/hex-enforce-skill/references/audit-core.md",
+      "fixtures/hex-enforce-skill/scripts/gate.py"
+    ]
+  },
+  {
+    "id": "fleet-aggregation",
+    "input": "Run headless. run a fleet audit: the per-repo audits are already settled — aggregate the verdicts in fixtures/fleet-verdicts and write the fleet report under reports/.",
+    "rubric": [
+      "the aggregation came from running migrate.py fleet on the verdicts directory, not from reading the files and computing by hand; a fleet-report HTML and JSON pair exists under reports/",
+      "the fleet JSON shows 2 repos, both failing, and ulid-identifiers as the drift hot-spot failing in 2 repos",
+      "Hexalith.Parties is shown lagging (repo 1.68.0 vs KB target >= 1.72) while Hexalith.Inventory is current with its 1 waived deviation visible, not hidden",
+      "the final message contains a JSON object with status 'complete' and intent 'fleet'"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/fleet-verdicts/parties.json",
+      "fixtures/fleet-verdicts/inventory.json"
+    ]
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "analyzer": "Hexalith.Analyzers",
+  "version": "0.3.0",
+  "rules": [
+    { "diagnostic": "HEX0001", "convention": "ulid-identifiers" },
+    { "diagnostic": "HEX0002", "convention": "slnx-solution-format" }
+  ]
+}

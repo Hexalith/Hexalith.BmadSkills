@@ -1,0 +1,75 @@
+{
+  "scanner": "workflow-integrity-prepass",
+  "script": "prepass-workflow-integrity.py",
+  "version": "1.0.0",
+  "skill_path": "../../../skills/hex-enforce",
+  "timestamp": "2026-07-13T14:43:30.703684+00:00",
+  "status": "warning",
+  "metadata": {
+    "frontmatter": {
+      "name": "hex-enforce",
+      "description": "Gates Hexalith changes against conventions with cited findings. Use when the user says 'enforce hexalith conventions', 'review this diff for conformance', 'run the conformance gate', 'check analyzer coverage', or 'propose a waiver'."
+    },
+    "sections": [
+      {
+        "level": 2,
+        "title": "Resolution rules",
+        "line": 17
+      },
+      {
+        "level": 2,
+        "title": "Shared machinery",
+        "line": 22
+      },
+      {
+        "level": 2,
+        "title": "Intents",
+        "line": 30
+      },
+      {
+        "level": 2,
+        "title": "Headless",
+        "line": 40
+      },
+      {
+        "level": 2,
+        "title": "Module handoff",
+        "line": 48
+      }
+    ],
+    "workflow_type": "simple-utility"
+  },
+  "stage_summary": {
+    "total_stages": 0,
+    "referenced": [],
+    "actual": [],
+    "missing_stages": [],
+    "orphaned_stages": []
+  },
+  "prompt_details": [],
+  "issues": [
+    {
+      "file": "SKILL.md",
+      "line": 1,
+      "severity": "high",
+      "category": "sections",
+      "issue": "Missing ## Overview section"
+    },
+    {
+      "file": "SKILL.md",
+      "line": 1,
+      "severity": "high",
+      "category": "sections",
+      "issue": "Missing ## On Activation section"
+    }
+  ],
+  "summary": {
+    "total_issues": 2,
+    "by_severity": {
+      "critical": 0,
+      "high": 2,
+      "medium": 0,
+      "low": 0
+    }
+  }
+}

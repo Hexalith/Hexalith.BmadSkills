@@ -1,0 +1,19 @@
+{
+  "id": "source-fallback-gap",
+  "input": "Run headless. consult hexalith: where do localization resources live in a module? KB at fixtures/kb-mini, framework source is the local clone at fixtures/framework-src",
+  "rubric": [
+    "the answer states localization resources live in the Presentation-layer <Module>.Localizations package as .resx files resolved through IStringLocalizer<T>, citing fixtures/framework-src/docs/localization.md as framework source (not a KB entry id)",
+    "a new intake file exists under fixtures/kb-mini/intake/ with source: consult and status: open, describing the localization question the KB could not answer",
+    "the answer does not invent details absent from fixtures/framework-src/docs/localization.md",
+    "the final message contains a JSON object with status 'complete' and a gaps_filed array naming the new intake file"
+  ],
+  "state_prefix": null,
+  "files": [
+    "fixtures/kb-mini/meta.md",
+    "fixtures/kb-mini/index.md",
+    "fixtures/kb-mini/entries/ulid-identifiers.md",
+    "fixtures/kb-mini/entries/aggregate-result-executionresult.md",
+    "fixtures/kb-mini/entries/aggregate-result-domainresult.md",
+    "fixtures/framework-src/docs/localization.md"
+  ]
+}

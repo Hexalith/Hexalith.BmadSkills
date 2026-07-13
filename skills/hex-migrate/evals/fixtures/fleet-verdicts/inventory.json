@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "verdict": "fail",
+  "scope": "repo",
+  "layer": "full",
+  "target": "repos/Hexalith.Inventory",
+  "findings": [
+    {
+      "id": "ulid-identifiers",
+      "severity": "fail",
+      "tier": "mechanical",
+      "file": "src/Inventory.Domain/StockItem.cs",
+      "line": 9,
+      "evidence": "ItemId = Guid.NewGuid().ToString(\"N\");",
+      "explanation": "GUID generated where a ULID from UniqueIdHelper.GenerateUniqueStringId() is required"
+    }
+  ],
+  "waived": [
+    {
+      "id": "module-boundary-domain-only",
+      "severity": "fail",
+      "tier": "judgment",
+      "file": "src/Inventory.Domain/InventoryDbContext.cs",
+      "line": 5,
+      "evidence": "public sealed class InventoryDbContext : DbContext",
+      "explanation": "persistence infrastructure inside a domain module",
+      "waiver": {
+        "id": "module-boundary-domain-only",
+        "reason": "transitional DbContext during the EventStore split, tracked as HX-88",
+        "review": "2026-12-01"
+      }
+    }
+  ],
+  "analyzer_owned": [],
+  "expired_waivers": [],
+  "counts": { "fail": 1, "warn": 0, "waived": 1, "analyzer_owned": 0 },
+  "staleness": {
+    "targets_framework": ">= 1.72",
+    "repo_version": "1.72.0",
+    "packages_props": "repos/Hexalith.Inventory/Directory.Packages.props",
+    "comparable": true,
+    "kb_lags_repo": false,
+    "repo_lags_target": false
+  }
+}

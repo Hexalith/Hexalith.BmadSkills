@@ -1,0 +1,108 @@
+{
+  "run_id": "20260713-153242-hex-consult-baseline",
+  "completed_at": "2026-07-13T13:32:46Z",
+  "mode": "baseline",
+  "total": 8,
+  "executed": 0,
+  "skipped": 0,
+  "failures": 8,
+  "run_dir": "/home/administrator/projects/hexalith/bmadskills/skills/reports/eval-runs/20260713-153242-hex-consult-baseline",
+  "results": [
+    {
+      "case_id": "source-fallback-gap",
+      "config": "skill",
+      "status": "error",
+      "elapsed_s": 1.601,
+      "return_code": 1,
+      "transcript": "skill/source-fallback-gap/transcript.jsonl",
+      "cwd": "skill/source-fallback-gap/cwd",
+      "tokens": 0,
+      "tool_calls": {},
+      "error_tail": ""
+    },
+    {
+      "case_id": "unanswerable-no-hallucination",
+      "config": "skill",
+      "status": "error",
+      "elapsed_s": 1.752,
+      "return_code": 1,
+      "transcript": "skill/unanswerable-no-hallucination/transcript.jsonl",
+      "cwd": "skill/unanswerable-no-hallucination/cwd",
+      "tokens": 0,
+      "tool_calls": {},
+      "error_tail": ""
+    },
+    {
+      "case_id": "answer-cited",
+      "config": "skill",
+      "status": "error",
+      "elapsed_s": 1.916,
+      "return_code": 1,
+      "transcript": "skill/answer-cited/transcript.jsonl",
+      "cwd": "skill/answer-cited/cwd",
+      "tokens": 0,
+      "tool_calls": {},
+      "error_tail": ""
+    },
+    {
+      "case_id": "version-aware-answer",
+      "config": "skill",
+      "status": "error",
+      "elapsed_s": 1.915,
+      "return_code": 1,
+      "transcript": "skill/version-aware-answer/transcript.jsonl",
+      "cwd": "skill/version-aware-answer/cwd",
+      "tokens": 0,
+      "tool_calls": {},
+      "error_tail": ""
+    },
+    {
+      "case_id": "answer-cited",
+      "config": "bare",
+      "status": "error",
+      "elapsed_s": 1.29,
+      "return_code": 1,
+      "transcript": "bare/answer-cited/transcript.jsonl",
+      "cwd": "bare/answer-cited/cwd",
+      "tokens": 0,
+      "tool_calls": {},
+      "error_tail": ""
+    },
+    {
+      "case_id": "version-aware-answer",
+      "config": "bare",
+      "status": "error",
+      "elapsed_s": 1.306,
+      "return_code": 1,
+      "transcript": "bare/version-aware-answer/transcript.jsonl",
+      "cwd": "bare/version-aware-answer/cwd",
+      "tokens": 0,
+      "tool_calls": {},
+      "error_tail": ""
+    },
+    {
+      "case_id": "source-fallback-gap",
+      "config": "bare",
+      "status": "error",
+      "elapsed_s": 1.289,
+      "return_code": 1,
+      "transcript": "bare/source-fallback-gap/transcript.jsonl",
+      "cwd": "bare/source-fallback-gap/cwd",
+      "tokens": 0,
+      "tool_calls": {},
+      "error_tail": ""
+    },
+    {
+      "case_id": "unanswerable-no-hallucination",
+      "config": "bare",
+      "status": "error",
+      "elapsed_s": 1.475,
+      "return_code": 1,
+      "transcript": "bare/unanswerable-no-hallucination/transcript.jsonl",
+      "cwd": "bare/unanswerable-no-hallucination/cwd",
+      "tokens": 0,
+      "tool_calls": {},
+      "error_tail": ""
+    }
+  ]
+}

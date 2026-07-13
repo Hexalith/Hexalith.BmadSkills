@@ -1,0 +1,15 @@
+{
+  "case_id": "source-fallback-gap",
+  "config": "skill",
+  "status": "error",
+  "elapsed_s": 1.601,
+  "return_code": 1,
+  "transcript_source": "stdout",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "total_tokens": 0,
+  "tokens_reported": true,
+  "total_steps": 1,
+  "total_tool_calls": 0,
+  "captured_at": "2026-07-13T13:32:44Z"
+}

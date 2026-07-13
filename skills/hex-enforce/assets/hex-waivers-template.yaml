@@ -1,0 +1,15 @@
+# hex-waivers.yaml — intentional deviations from Hexalith conventions for THIS repo.
+# Lives at the repo root, versioned, reviewed in PRs. Read by hex-enforce and hex-migrate.
+#
+# One waiver per entry; every field required, one 'key: value' per line, no nesting:
+#   id      the KB convention id being waived
+#   reason  why this deviation is intentional (a ticket reference helps)
+#   review  YYYY-MM-DD — past this date the waiver suppresses nothing and
+#           surfaces as a finding of its own; renew it or fix the deviation.
+#
+# waivers:
+#   - id: ulid-identifiers
+#     reason: legacy import layer keeps GUID ids until the HX-123 rewrite lands
+#     review: 2026-12-01
+
+waivers:

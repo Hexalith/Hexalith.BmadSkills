@@ -1,0 +1,20 @@
+{
+  "id": "version-aware-answer",
+  "input": "Run headless. consult hexalith: what does an aggregate's Handle method return? KB at fixtures/kb-mini. Repo context: fixtures/repo-ctx",
+  "rubric": [
+    "the answer reads the repo's pinned Hexalith version (1.65.2 from fixtures/repo-ctx/Directory.Packages.props) and states that FOR THAT VERSION Handle returns ExecutionResult, citing aggregate-result-executionresult",
+    "the answer also states the current convention: since 1.72.0 Handle returns DomainResult, citing aggregate-result-domainresult as the successor entry",
+    "the aggregate-result-domainresult citation is flagged as unverified against source (its verified field is empty), while aggregate-result-executionresult carries verified 2026-06-20",
+    "the answer does not present DomainResult as what this repo should already be using without noting the version difference",
+    "the final message contains a JSON object with status 'complete'"
+  ],
+  "state_prefix": null,
+  "files": [
+    "fixtures/kb-mini/meta.md",
+    "fixtures/kb-mini/index.md",
+    "fixtures/kb-mini/entries/ulid-identifiers.md",
+    "fixtures/kb-mini/entries/aggregate-result-executionresult.md",
+    "fixtures/kb-mini/entries/aggregate-result-domainresult.md",
+    "fixtures/repo-ctx/Directory.Packages.props"
+  ]
+}

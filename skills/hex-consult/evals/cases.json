@@ -1,0 +1,77 @@
+[
+  {
+    "id": "answer-cited",
+    "input": "Run headless. consult hexalith: what identifier format do entities and commands use? KB at fixtures/kb-mini",
+    "rubric": [
+      "the answer states identifiers are ULID strings generated through UniqueIdHelper.GenerateUniqueStringId() and that GUIDs / database-generated integer ids are forbidden",
+      "the answer cites the ulid-identifiers KB entry and carries its trust signal: verified 2026-07-01",
+      "no intake file is created under fixtures/kb-mini/intake/ (the KB answered; there is no gap)",
+      "the final message contains a JSON object with status 'complete' and a citations array naming ulid-identifiers"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/index.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/aggregate-result-executionresult.md",
+      "fixtures/kb-mini/entries/aggregate-result-domainresult.md"
+    ]
+  },
+  {
+    "id": "version-aware-answer",
+    "input": "Run headless. consult hexalith: what does an aggregate's Handle method return? KB at fixtures/kb-mini. Repo context: fixtures/repo-ctx",
+    "rubric": [
+      "the answer reads the repo's pinned Hexalith version (1.65.2 from fixtures/repo-ctx/Directory.Packages.props) and states that FOR THAT VERSION Handle returns ExecutionResult, citing aggregate-result-executionresult",
+      "the answer also states the current convention: since 1.72.0 Handle returns DomainResult, citing aggregate-result-domainresult as the successor entry",
+      "the aggregate-result-domainresult citation is flagged as unverified against source (its verified field is empty), while aggregate-result-executionresult carries verified 2026-06-20",
+      "the answer does not present DomainResult as what this repo should already be using without noting the version difference",
+      "the final message contains a JSON object with status 'complete'"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/index.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/aggregate-result-executionresult.md",
+      "fixtures/kb-mini/entries/aggregate-result-domainresult.md",
+      "fixtures/repo-ctx/Directory.Packages.props"
+    ]
+  },
+  {
+    "id": "source-fallback-gap",
+    "input": "Run headless. consult hexalith: where do localization resources live in a module? KB at fixtures/kb-mini, framework source is the local clone at fixtures/framework-src",
+    "rubric": [
+      "the answer states localization resources live in the Presentation-layer <Module>.Localizations package as .resx files resolved through IStringLocalizer<T>, citing fixtures/framework-src/docs/localization.md as framework source (not a KB entry id)",
+      "a new intake file exists under fixtures/kb-mini/intake/ with source: consult and status: open, describing the localization question the KB could not answer",
+      "the answer does not invent details absent from fixtures/framework-src/docs/localization.md",
+      "the final message contains a JSON object with status 'complete' and a gaps_filed array naming the new intake file"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/index.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/aggregate-result-executionresult.md",
+      "fixtures/kb-mini/entries/aggregate-result-domainresult.md",
+      "fixtures/framework-src/docs/localization.md"
+    ]
+  },
+  {
+    "id": "unanswerable-no-hallucination",
+    "input": "Run headless. consult hexalith: what is the required retry policy for outbound HTTP calls from a module? KB at fixtures/kb-mini, framework source at fixtures/framework-src",
+    "rubric": [
+      "the response says the KB does not cover this and does NOT assert any specific retry policy (counts, backoff, Polly, resilience pipeline or similar) as a Hexalith convention",
+      "a new intake file exists under fixtures/kb-mini/intake/ with source: consult and status: open, capturing the retry-policy question",
+      "the final message contains a JSON object with status 'complete', answer null, and a non-empty gaps_filed array"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/index.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/aggregate-result-executionresult.md",
+      "fixtures/kb-mini/entries/aggregate-result-domainresult.md",
+      "fixtures/framework-src/docs/localization.md"
+    ]
+  }
+]

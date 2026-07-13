@@ -1,0 +1,161 @@
+# Analysis Report: skills/hex-enforce
+
+Generated: 2026-07-13 · Schema: 2
+
+**Grade: Good**
+
+> A lean, headless-first conformance gate with the right intelligence placement — but its two sharpest non-negotiables (cited ids must exist, never double-report) still ride on prompt discipline when gate.py could enforce both, and the headless return dead-ends the waiver and coverage intents.
+
+hex-enforce ships lean (1214 tokens), with a justified single carve (the shared audit core), clean customization posture, and a script that owns exactly the plumbing. The primary opportunity is finishing the determinism story: two set-membership checks that back the skill's own non-negotiables belong in gate.py verdict, and the headless JSON contract needs artifact channels so CI and bmad-loop can consume the non-gate intents.
+
+| Severity | Count |
+| --- | --- |
+| Critical | 0 |
+| High | 1 |
+| Medium | 8 |
+| Low | 2 |
+
+## Themes
+
+### 1. Non-negotiables the script could enforce but doesn't
+
+- Root cause: The skill's two hardest rules — a finding must cite a real KB convention id, and judgment runs must skip analyzer-covered mechanical ids — are pure set-membership checks, yet gate.py verdict validates neither. A hallucinated id or a double-report sails through the deterministic gate on the skill's primary (CI) surface.
+- Fix: Extend gate.py verdict: with --kb, reject (exit 2) any finding whose id is not a current KB entry id; with the coverage partition (--manifest), move judgment-layer findings citing covered mechanical ids into a surfaced skipped bucket instead of counting them. Unit-test both beside test_uncited_finding_rejected.
+- Findings:
+  - `determinism-1` verdict never checks that cited convention ids exist in the KB — `scripts/gate.py:validate_findings and cmd_verdict; references/audit-core.md step 5`
+  - `determinism-3` Judgment-layer skip of analyzer-covered ids is enforced only by the prompt — `references/audit-core.md Procedure step 2 and scripts/gate.py:cmd_verdict`
+
+### 2. Headless return under-serves the non-gate intents
+
+- Root cause: The return schema is gate-shaped: verdict/counts mean nothing for the waiver intent and are lossy for coverage, no field carries the drafted waiver diff or the coverage partition, and gap filings written to an ephemeral CI checkout evaporate with only a path in gaps_filed. The skill declares headless its primary surface, so these are dead-ends on the main road.
+- Fix: Add an artifact channel to the headless return (paths or inline content per intent): the waiver draft location, the coverage partition (covered/uncovered/unknown counts or report path), and — when the KB intake/ is not durably writable — each gap's full content inline in gaps_filed so the caller can re-file it.
+- Findings:
+  - `architecture-1` Headless return contract dead-ends the waiver intent — `SKILL.md Intents 'Propose a waiver' + Headless`
+  - `enhancement-2` Add: artifact/report paths in the headless return for coverage and waiver intents — `SKILL.md ## Headless`
+  - `enhancement-3` Add: graceful degradation for gap-filing in ephemeral or read-only CI workspaces — `SKILL.md non-negotiables + Headless; references/audit-core.md step 4`
+
+### 3. Degraded modes contradict on the primary surface
+
+- Root cause: Shared machinery allows a by-hand 'unsettled by gate.py' verdict when scripts are unavailable, but Headless mandates settlement through gate.py and offers no representation for an unsettled verdict — two instructions collide exactly where a CI gate would trust a hand-computed pass/fail.
+- Fix: Make script unavailability a blocked condition in headless (fail loudly, matching the malformed-waivers stance) and scope the by-hand fallback to interactive mode explicitly.
+- Findings:
+  - `architecture-2` Script-unavailable fallback contradicts the headless settlement rule — `SKILL.md Shared machinery vs Headless`
+
+### 4. Scope boundary with hex-migrate needs one routing line
+
+- Root cause: audit-core.md hands the model repo-scope machinery, but SKILL.md never says repo-wide requests belong to hex-migrate — a 'gate the whole repo' arrival gets an improvised out-of-scope run instead of a redirect.
+- Fix: Add one sentence to ## Intents: repo-wide audit → hex-migrate; this skill is diff-scoped.
+- Findings:
+  - `enhancement-1` Add: redirect line for repo-scope requests (wrong-intent routing) — `SKILL.md ## Intents`
+
+## Strengths
+
+- Intelligence placement: gate.py owns exactly the plumbing (parse, cross, compare, settle) and the prompt owns judgment; leaving git-diff scoping unscripted was judged correct by the determinism lens.
+- The audit core carve is justified and standalone by design — the shared engine hex-migrate and the fleet report will consume, with the findings schema as the module's machine contract.
+- Customization posture is exactly right: declined, no forbidden mechanisms, variable surfaces live in the correct external contracts (hex-waivers.yaml, analyzer-rules.json, module config).
+- Waiver lifecycle is enforced deterministically end to end: active suppresses visibly, expired bites, malformed blocks loudly.
+- SKILL.md at 1214 tokens with zero waste patterns; the one numbered sequence is a true sequence.
+
+## Recommendations
+
+1. Harden gate.py verdict with KB id-existence and coverage-aware double-report checks, plus unit tests. (resolves: determinism-1, determinism-3)
+2. Extend the headless return with per-intent artifact channels and inline gap content for ephemeral checkouts. (resolves: architecture-1, enhancement-2, enhancement-3)
+3. Resolve the script-unavailable contradiction: blocked in headless, by-hand fallback interactive-only. (resolves: architecture-2)
+4. Add the repo-scope redirect line to ## Intents and the language-variable line to audit-core.md; drop the duplicated intake frontmatter parenthetical from SKILL.md. (resolves: enhancement-1, architecture-4, leanness-1)
+5. Record the module-level decision that hex-* headless returns rely on their JSON payloads (findings/citations/verdict) rather than per-run memlogs — or wire memlog discipline uniformly across the three siblings. This is a module-wide convention call, not a hex-enforce edit. (resolves: architecture-3)
+6. Optional: add a gate.py rules subcommand emitting per-entry JSON plus an index-drift flag so rule selection consumes a pre-pass instead of re-deriving frontmatter each run. (resolves: determinism-2)
+
+## Experience
+
+- **CI gate on a PR** — headless invoke → audit core diff/judgment → findings JSON → gate.py verdict settles + annotations → exit code gates merge
+- **Interactive PR review** — review working-tree diff → walk findings with citations → contested judgment call routed to hex-consult explain → optional waiver draft
+- **Coverage map** — gate.py coverage → covered/uncovered partition → analyzer backlog report for Hexalith.Builds
+- **Propose a waiver** — draft entry from template → gate.py waivers validates → human merges the diff
+- Headless: Primary surface by design; solid for the gate intent, but waiver/coverage callers currently get a return with no artifact channel (theme 2).
+
+## Findings
+
+### High (1)
+
+#### determinism-1 — verdict never checks that cited convention ids exist in the KB
+
+- Lens: determinism
+- Location: `scripts/gate.py:validate_findings and cmd_verdict; references/audit-core.md step 5`
+- Evidence: validate_findings enforces only string non-emptiness; cmd_verdict accepts --kb but uses it solely for staleness. The skill's first non-negotiable and the eval rubric both demand real ids, yet a hallucinated id sails through the gate and produces a failing CI verdict citing a nonexistent convention.
+- Recommendation: Generalize kb_mechanical_ids to enumerate all current entry ids and have cmd_verdict, when --kb is given, exit 2 on any finding whose id is not in that set. Add a unit test alongside test_uncited_finding_rejected.
+
+### Medium (8)
+
+#### determinism-3 — Judgment-layer skip of analyzer-covered ids is enforced only by the prompt
+
+- Lens: determinism
+- Location: `references/audit-core.md Procedure step 2 and scripts/gate.py:cmd_verdict`
+- Evidence: The skip is set membership (finding.id in the coverage covered list) with one correct answer, but cmd_verdict never sees the coverage partition, so a double-reported finding ships unflagged and the never-double-report non-negotiable rests on the model remembering step 2's output at step 4.
+- Recommendation: Let cmd_verdict accept the coverage input and, when layer is judgment, move findings citing covered mechanical ids into a surfaced bucket (visible, never silent) rather than counting them.
+
+#### determinism-2 — Rule selection and index-staleness detection are prompt work gate.py could pre-pass
+
+- Lens: determinism
+- Location: `references/audit-core.md Procedure step 1`
+- Evidence: Deciding the index is stale means comparing index.md against entries/ frontmatter, and enumerating current-vs-superseded entries is deterministic frontmatter filtering the model re-derives every run, even though gate.py already owns parse_frontmatter and does this exact filter inside kb_mechanical_ids.
+- Recommendation: Add a rules subcommand (or extend coverage) emitting compact JSON per entry ({id, tag, title, until, path}) plus an index_drift flag, so the prompt consumes metrics and opens only the Statement bodies it needs for judgment.
+
+#### architecture-1 — Headless return contract dead-ends the waiver intent
+
+- Lens: architecture
+- Location: `SKILL.md Intents 'Propose a waiver' + Headless`
+- Evidence: The headless intent enum includes 'waiver', but the return schema carries no field for the drafted waiver diff — no path, no artifact pointer. A JSON-parsing caller on the declared-primary surface has no channel to receive it; the gate-shaped counts also carry no meaning for the coverage intent.
+- Recommendation: Add an artifact field to the headless return and state where headless writes the draft; give the coverage intent a result channel or scope counts to the gate intent.
+
+#### architecture-2 — Script-unavailable fallback contradicts the headless settlement rule
+
+- Lens: architecture
+- Location: `SKILL.md Shared machinery vs Headless`
+- Evidence: Shared machinery allows a by-hand verdict marked 'unsettled by gate.py'; Headless mandates settlement through gate.py, its verdict enum has no unsettled value, and script unavailability is not a listed blocked condition. The two sections give contradictory instructions for the same condition on the primary surface.
+- Recommendation: In headless, script unavailability returns status 'blocked' with reason; keep the by-hand fallback interactive-only and say so in Shared machinery.
+
+#### architecture-3 — Headless mode records no assumption trail (no memlog discipline, no memlog path in return)
+
+- Lens: architecture
+- Location: `SKILL.md Headless`
+- Evidence: Headless infers intent, diff/target, and KB path without the user, yet nothing routes those assumptions to a memlog and the return carries no memlog path, contrary to the principles' headless-mode bar. Siblings hex-absorb and hex-consult share this exact return shape, so this is a module-wide convention — but no file records that waiver of the bar. Mitigation: the findings/verdict JSON itself records scope, layer, and target.
+- Recommendation: Either wire the principles' headless memlog discipline in, or record the module-level decision to exempt hex-* headless returns from it, applied uniformly across the three siblings.
+
+#### enhancement-1 — Add: redirect line for repo-scope requests (wrong-intent routing)
+
+- Lens: enhancement
+- Location: `SKILL.md ## Intents`
+- Evidence: The intents define only diff scope, yet audit-core.md parameterizes the shared engine as diff|repo and the module plan assigns repo-wide runs to hex-migrate. A 'run the gate on the whole repo' arrival hits no routing and the model will plausibly improvise a repo-wide audit inside hex-enforce.
+- Recommendation: One line in ## Intents: repo-wide audit → hex-migrate; this skill is diff-scoped.
+
+#### enhancement-2 — Add: artifact/report paths in the headless return for coverage and waiver intents
+
+- Lens: enhancement
+- Location: `SKILL.md ## Headless`
+- Evidence: The return schema is gate-shaped: verdict and counts are meaningless for intent 'waiver' and lossy for 'coverage', and neither intent's actual output is reachable from the return. A harness that parses only the final JSON object cannot locate either artifact.
+- Recommendation: Add an optional per-intent artifact field (waiver diff path, coverage partition or report path) so the headless caller can retrieve the deliverable without scraping conversation output.
+
+#### enhancement-3 — Add: graceful degradation for gap-filing in ephemeral or read-only CI workspaces
+
+- Lens: enhancement
+- Location: `SKILL.md non-negotiables + Headless; references/audit-core.md step 4`
+- Evidence: Every KB silence routes to a write in the KB's intake/, but in CI the checkout is ephemeral or the KB read-only, so the write fails or evaporates and gaps_filed carries only a dead path — the module's gap→absorb loop silently breaks on the primary surface.
+- Recommendation: When intake/ is not durably writable, carry each gap's full content inline in the gaps_filed entries so the caller can re-file it; interactive mode keeps the direct write.
+
+### Low (2)
+
+#### architecture-4 — audit-core.md omits the language variables required of carved files
+
+- Lens: architecture
+- Location: `references/audit-core.md`
+- Evidence: The file is deliberately standalone and produces human-read prose (finding evidence/explanations flowing into verdicts and PR annotations), yet contains neither {communication_language} nor {document_output_language}; sibling consumer hex-migrate gets no language guidance from it at all.
+- Recommendation: Add one line: write finding evidence/explanations and any narrative report in {document_output_language}; converse in {communication_language}.
+
+#### leanness-1 — Intake frontmatter mechanics duplicated between SKILL.md and audit-core.md
+
+- Lens: leanness
+- Location: `SKILL.md Non-negotiables (first bullet)`
+- Evidence: SKILL.md's first non-negotiable spells out the gap-filing frontmatter verbatim and audit-core.md step 4 carries the identical parenthetical; audit-core is mandated loaded before any review, and gap-filing only arises during reviews, so both copies are always in context. The policy half of the bullet is load-bearing and stays.
+- Recommendation: Keep the policy sentence; drop the frontmatter parenthetical from SKILL.md and let audit-core.md step 4 own the intake entry format.
+- Proposed smallest: An objection you cannot tie to a KB convention id and a code location is not a finding. When something looks wrong but the KB is silent or ambiguous, file a gap to the KB's `intake/` (format in `references/audit-core.md`) instead of rejecting.
+- Predicted delta: None expected: audit-core.md is always loaded before any review run, so the exact frontmatter fields remain in context at the moment of writing; the pointer covers the hypothetical non-review gap filing.

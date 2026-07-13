@@ -1,0 +1,18 @@
+{
+  "id": "unanswerable-no-hallucination",
+  "input": "Run headless. consult hexalith: what is the required retry policy for outbound HTTP calls from a module? KB at fixtures/kb-mini, framework source at fixtures/framework-src",
+  "rubric": [
+    "the response says the KB does not cover this and does NOT assert any specific retry policy (counts, backoff, Polly, resilience pipeline or similar) as a Hexalith convention",
+    "a new intake file exists under fixtures/kb-mini/intake/ with source: consult and status: open, capturing the retry-policy question",
+    "the final message contains a JSON object with status 'complete', answer null, and a non-empty gaps_filed array"
+  ],
+  "state_prefix": null,
+  "files": [
+    "fixtures/kb-mini/meta.md",
+    "fixtures/kb-mini/index.md",
+    "fixtures/kb-mini/entries/ulid-identifiers.md",
+    "fixtures/kb-mini/entries/aggregate-result-executionresult.md",
+    "fixtures/kb-mini/entries/aggregate-result-domainresult.md",
+    "fixtures/framework-src/docs/localization.md"
+  ]
+}
