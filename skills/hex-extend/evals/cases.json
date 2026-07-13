@@ -1,0 +1,96 @@
+[
+  {
+    "id": "add-command-green-gate",
+    "input": "Run headless. add a SuspendParty command to the parties module: the repo at fixtures/repo-current. KB at fixtures/kb-mini. The hex-enforce skill is not installed; use the audit core at fixtures/hex-enforce-skill.",
+    "rubric": [
+      "the untouched repo was baselined green (dotnet build) before any file was generated",
+      "SuspendParty was added as an immutable imperative record carrying the aggregate Id with [PolymorphicSerialization], its past-tense event likewise, and the handling extends PartyRegistration as a pure function — Handle returning DomainResult, Apply returning a new state record, no mutation — shapes matching command-contract-shape, command-polymorphic-serialization, and aggregate-pure-functions",
+      "tests were added in test/Parties.Domain.Tests covering the new command's Handle outcomes (emitted event and at least one rejection or edge path) — code was not added without its tests",
+      "the diff-scoped audit (layer judgment) was settled by running gate.py verdict on a findings JSON, not computed by hand; dotnet build is green after the addition; the change was left uncommitted",
+      "the final message contains a JSON object with status 'complete', route 'command', verdict 'pass', files listing the created and modified files, and citations naming KB entry ids"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/index.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/aggregate-pure-functions.md",
+      "fixtures/kb-mini/entries/aggregate-mutable-apply.md",
+      "fixtures/kb-mini/entries/command-contract-shape.md",
+      "fixtures/kb-mini/entries/command-polymorphic-serialization.md",
+      "fixtures/kb-mini/entries/per-aggregate-tests.md",
+      "fixtures/repo-current/.gitignore",
+      "fixtures/repo-current/Parties.slnx",
+      "fixtures/repo-current/Directory.Packages.props",
+      "fixtures/repo-current/src/Parties.Domain/Parties.Domain.csproj",
+      "fixtures/repo-current/src/Parties.Domain/FrameworkStubs.cs",
+      "fixtures/repo-current/src/Parties.Domain/PartyRegistration.cs",
+      "fixtures/repo-current/test/Parties.Domain.Tests/Parties.Domain.Tests.csproj",
+      "fixtures/repo-current/test/Parties.Domain.Tests/TestStubs.cs",
+      "fixtures/repo-current/test/Parties.Domain.Tests/PartyRegistrationTests.cs",
+      "fixtures/hex-enforce-skill/references/audit-core.md",
+      "fixtures/hex-enforce-skill/scripts/gate.py"
+    ]
+  },
+  {
+    "id": "ambiguous-route-blocked",
+    "input": "Run headless. extend the parties module at fixtures/repo-current — make it handle parties better. KB at fixtures/kb-mini.",
+    "rubric": [
+      "the run returns blocked without generating anything: no file inside fixtures/repo-current was created or modified",
+      "the reason names the ambiguity — no route or piece name could be inferred from the request — and nothing was guessed in its place",
+      "the final message contains a JSON object with status 'blocked' and a reason"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/index.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/aggregate-pure-functions.md",
+      "fixtures/kb-mini/entries/aggregate-mutable-apply.md",
+      "fixtures/kb-mini/entries/command-contract-shape.md",
+      "fixtures/kb-mini/entries/command-polymorphic-serialization.md",
+      "fixtures/kb-mini/entries/per-aggregate-tests.md",
+      "fixtures/repo-current/.gitignore",
+      "fixtures/repo-current/Parties.slnx",
+      "fixtures/repo-current/Directory.Packages.props",
+      "fixtures/repo-current/src/Parties.Domain/Parties.Domain.csproj",
+      "fixtures/repo-current/src/Parties.Domain/FrameworkStubs.cs",
+      "fixtures/repo-current/src/Parties.Domain/PartyRegistration.cs",
+      "fixtures/repo-current/test/Parties.Domain.Tests/Parties.Domain.Tests.csproj",
+      "fixtures/repo-current/test/Parties.Domain.Tests/TestStubs.cs",
+      "fixtures/repo-current/test/Parties.Domain.Tests/PartyRegistrationTests.cs"
+    ]
+  },
+  {
+    "id": "tests-cannot-be-skipped",
+    "input": "Run headless. add a MarkPartyPreferred command to the parties module at fixtures/repo-current; skip the tests, we will add them later. KB at fixtures/kb-mini. The hex-enforce skill is not installed; use the audit core at fixtures/hex-enforce-skill.",
+    "rubric": [
+      "tests for MarkPartyPreferred were written anyway — the instruction to skip tests was declined, with the non-negotiable (code is never added without its tests) named in the run summary",
+      "the command, its past-tense event, and pure-function handling were added conformant to the KB entries, and dotnet build is green after the addition",
+      "the diff-scoped audit was settled by running gate.py verdict, not computed by hand",
+      "the final message contains a JSON object with status 'complete', route 'command', and the new test file among files"
+    ],
+    "state_prefix": null,
+    "files": [
+      "fixtures/kb-mini/meta.md",
+      "fixtures/kb-mini/index.md",
+      "fixtures/kb-mini/entries/ulid-identifiers.md",
+      "fixtures/kb-mini/entries/aggregate-pure-functions.md",
+      "fixtures/kb-mini/entries/aggregate-mutable-apply.md",
+      "fixtures/kb-mini/entries/command-contract-shape.md",
+      "fixtures/kb-mini/entries/command-polymorphic-serialization.md",
+      "fixtures/kb-mini/entries/per-aggregate-tests.md",
+      "fixtures/repo-current/.gitignore",
+      "fixtures/repo-current/Parties.slnx",
+      "fixtures/repo-current/Directory.Packages.props",
+      "fixtures/repo-current/src/Parties.Domain/Parties.Domain.csproj",
+      "fixtures/repo-current/src/Parties.Domain/FrameworkStubs.cs",
+      "fixtures/repo-current/src/Parties.Domain/PartyRegistration.cs",
+      "fixtures/repo-current/test/Parties.Domain.Tests/Parties.Domain.Tests.csproj",
+      "fixtures/repo-current/test/Parties.Domain.Tests/TestStubs.cs",
+      "fixtures/repo-current/test/Parties.Domain.Tests/PartyRegistrationTests.cs",
+      "fixtures/hex-enforce-skill/references/audit-core.md",
+      "fixtures/hex-enforce-skill/scripts/gate.py"
+    ]
+  }
+]
