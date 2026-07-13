@@ -48,7 +48,7 @@ The hex skills call external CLIs at runtime. Check each and guide installation 
 | .NET SDK 10+ | hex-create / hex-extend / hex-migrate green-build gates | `dotnet --version` |
 | git | all skills | `git --version` |
 | gh (authenticated) | hex-absorb release reading and drain PRs, fleet operations, hex-enforce PR annotations | `gh auth status` |
-| uv | all skill scripts (`kb.py`, `gate.py`, `migrate.py`, `scaffold.py` run via `uv run`) | `uv --version` |
+| uv | all skill scripts — this skill's setup scripts plus the sibling skills' `kb.py`, `gate.py`, `migrate.py`, `scaffold.py` (all run via `uv run`) | `uv --version` |
 
 Include the results in the confirmation summary, with install guidance for anything missing.
 
@@ -59,13 +59,13 @@ Write a temp JSON file with the collected answers structured as `{"core": {...},
 In the commands below, replace `{project-root}` in every path argument with the actual project root (e.g. `/home/me/myapp`) before running — these are filesystem paths, not config values.
 
 ```bash
-python3 ./scripts/merge-config.py --config-path "{project-root}/_bmad/config.yaml" --user-config-path "{project-root}/_bmad/config.user.yaml" --module-yaml ./assets/module.yaml --answers {temp-file} --legacy-dir "{project-root}/_bmad"
-python3 ./scripts/merge-help-csv.py --target "{project-root}/_bmad/module-help.csv" --source ./assets/module-help.csv --legacy-dir "{project-root}/_bmad" --module-code hex
+uv run ./scripts/merge-config.py --config-path "{project-root}/_bmad/config.yaml" --user-config-path "{project-root}/_bmad/config.user.yaml" --module-yaml ./assets/module.yaml --answers {temp-file} --legacy-dir "{project-root}/_bmad"
+uv run ./scripts/merge-help-csv.py --target "{project-root}/_bmad/module-help.csv" --source ./assets/module-help.csv --legacy-dir "{project-root}/_bmad" --module-code hex
 ```
 
 Both scripts output JSON to stdout with results. If either exits non-zero, surface the error and stop. The scripts automatically read legacy config values as fallback defaults, then delete the legacy files after a successful merge. Check `legacy_configs_deleted` and `legacy_csvs_deleted` in the output to confirm cleanup.
 
-Run `./scripts/merge-config.py --help` or `./scripts/merge-help-csv.py --help` for full usage.
+Run `uv run ./scripts/merge-config.py --help` or `uv run ./scripts/merge-help-csv.py --help` for full usage.
 
 ## Create Output Directories
 
@@ -84,16 +84,16 @@ After both merge scripts complete successfully, remove the installer's package d
 As with the merge scripts, replace `{project-root}` in the `--bmad-dir` and `--skills-dir` path arguments with the actual project root before running.
 
 ```bash
-python3 ./scripts/cleanup-legacy.py --bmad-dir "{project-root}/_bmad" --module-code hex --also-remove _config --skills-dir "{project-root}/.claude/skills"
+uv run ./scripts/cleanup-legacy.py --bmad-dir "{project-root}/_bmad" --module-code hex --also-remove _config --skills-dir "{project-root}/.claude/skills"
 ```
 
 The script verifies that every skill in the legacy directories exists at `.claude/skills/` before removing anything. Directories without skills (like `_config/`) are removed directly. If the script exits non-zero, surface the error and stop. Missing directories (already cleaned by a prior run) are not errors — the script is idempotent.
 
-Check `directories_removed` and `files_removed_count` in the JSON output for the confirmation step. Run `./scripts/cleanup-legacy.py --help` for full usage.
+Check `directories_removed` and `files_removed_count` in the JSON output for the confirmation step. Run `uv run ./scripts/cleanup-legacy.py --help` for full usage.
 
 ## Confirm
 
-Use the script JSON output to display what was written — config values set (written to `config.yaml` at root for core, module section for module values), user settings written to `config.user.yaml` (`user_keys` in result), help entries added, fresh install vs update. If legacy files were deleted, mention the migration. If legacy directories were removed, report the count and list (e.g. "Cleaned up 106 installer package files from bmb/, core/, \_config/ — skills are installed at .claude/skills/"). Then display the `module_greeting` from `./assets/module.yaml` to the user.
+Use the script JSON output to display what was written — config values set (written to `config.yaml` at root for core, module section for module values), user settings written to `config.user.yaml` (`user_keys` in result), help entries added, fresh install vs update. If legacy files were deleted, mention the migration. If legacy directories were removed, report the count and list (e.g. "Cleaned up 106 installer package files from hex/, core/, \_config/ — skills are installed at .claude/skills/"). Then display the `module_greeting` from `./assets/module.yaml` to the user.
 
 ## Outcome
 

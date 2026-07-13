@@ -104,6 +104,17 @@ class KbTests(unittest.TestCase):
                          "'## Statement' missing", "'## Why' missing"):
             self.assertIn(expected, problems)
 
+    def test_validate_rejects_na_drained_for_ai_tools_provenance(self):
+        entry = GOOD_ENTRY.format(id="a", until="", supersedes="", verified="").replace(
+            "provenance: framework:Hexalith@v1.40.0",
+            "provenance: ai-tools:hexalith-llm-instructions.md#naming",
+        )
+        make_kb(self.root, {"a": entry}, intake=False)
+        code, result = run(kb.cmd_validate, self.root)
+        self.assertEqual(code, 1)
+        problems = " | ".join(f["problem"] for f in result["findings"])
+        self.assertIn("drained 'na' invalid for ai-tools provenance", problems)
+
     def test_validate_missing_root(self):
         code, result = run(kb.cmd_validate, self.root)
         self.assertEqual(code, 1)

@@ -37,7 +37,7 @@ def parse_args():
     parser.add_argument(
         "--module-code",
         required=True,
-        help="Module code being cleaned up (e.g. 'bmb')",
+        help="Module code being cleaned up (e.g. 'hex')",
     )
     parser.add_argument(
         "--also-remove",

@@ -1,64 +1,73 @@
-# Module Validation Report — `hex`
+# Module Validation Report — BMAD Hexalith Module (`hex`)
 
 - **Module folder:** `{project-root}/skills/`
-- **Date:** 2026-07-13 (supersedes the earlier same-day report, which predated hex-enforce)
+- **Date:** 2026-07-13 (supersedes the earlier same-day report, which predated hex-setup and the full seven-skill module)
 - **Validator:** bmad-module-builder / Validate Module (VM)
-- **Skills reviewed:** hex-absorb, hex-consult, hex-enforce
-- **Result:** ❌ **Fail (structural)** — all three skills are registration-ready, but module packaging does not exist yet
+- **Skills reviewed:** hex-setup, hex-absorb, hex-consult, hex-enforce, hex-migrate, hex-extend, hex-create
+- **Result:** ✅ **Pass** — ready for use; findings below are hardening and polish
 
-## Structural issues (validation script)
+## Structural validation (script) — PASS
 
-| # | Severity | Finding |
-|---|----------|---------|
-| 1 | **Critical** | No setup skill (`hex-setup/`) exists, and no skill has standalone self-registration (`assets/module.yaml`, `assets/module-setup.md`, `assets/module-help.csv`, merge scripts). The module cannot be installed or registered — no help CSV, no config merge, no registration path. |
-| 2 | **Warning** | Stray empty directory tree `skills/hex-enforce/skills/hex-enforce/evals/fixtures/...` — a scaffolding artifact (directories only, zero files), likely from a script resolving fixture paths against the wrong root. Delete it; a nested `skills/` tree inside a skill can confuse skill discovery during CM scaffolding. |
+Zero findings. Setup skill `hex-setup` detected, `module.yaml` complete, 24 CSV entries with no missing skills, no orphans, no duplicate menu codes, no broken `preceded-by`/`followed-by` references, all required fields present. `module.yaml` has no `agents:` block, so agent-roster checks do not apply.
 
-**Fix for #1:** Run **Create Module (CM)** on `skills/` to scaffold `hex-setup` with `module.yaml`, the help CSV, and merge scripts.
-**Fix for #2:** `rm -r skills/hex-enforce/skills`.
+## Registration completeness & accuracy — PASS
 
-## Quality findings (LLM review)
+All 24 CSV rows cross-checked against each skill's actual capabilities:
 
-### hex-absorb — ✅ strong
+| Skill | CSV rows | Capabilities found | Verdict |
+|---|---|---|---|
+| hex-setup | 1 (SH) | 1 invokable action | complete |
+| hex-absorb | 5 (SK, IR, VK, DA, PI) | 5 intents | complete |
+| hex-consult | 4 (CQ, SE, EF, FG) | 4 intents | complete |
+| hex-enforce | 3 (GD, CV, PW) | 3 intents | complete |
+| hex-migrate | 3 (AU, DU, FA) | 3 intents | complete |
+| hex-extend | 6 (XA–XU) | 6 routes | complete |
+| hex-create | 2 (NP, NM) | 2 invokable phases | complete |
 
-- Frontmatter correct: `name` matches directory; description is verb-led with five trigger phrases mapping one-to-one to its five intents (seed, ingest release, verify against source, drain AI.Tools, process intake).
-- Module handoff metadata present: `module-code: hex · phase: knowledge · is-required: true`.
-- Headless contract defined. Referenced assets all exist (`assets/entry-template.md`, `assets/intake-template.md`, `scripts/kb.py`).
-- **When packaged, register 5 CSV entries — one per intent.**
+Every distinct capability has its own row; hex-create's internal seed/verify phases are correctly *not* registered as separate entries (they run inside `scaffold`). Action names and args match the skills' documented inputs. Relationships are sound: `hex-absorb:seed` is the only `required: true` entry and everything KB-dependent is preceded by it; the plan→scaffold, audit→drive, gate→waiver, and gap→intake chains are correct. Menu codes are mnemonic and collision-free.
 
-### hex-consult — ✅ strong
+## Quality findings
 
-- Frontmatter correct: verb-led description with trigger phrases matching its four intents (answer a question, show a conformant example, explain a finding, file a gap).
-- Module handoff metadata present: `module-code: hex · phase: knowledge · after: hex-absorb · is-required: false`. The `after: hex-absorb` ordering genuinely reflects the dependency (consult reads the KB that absorb writes).
-- Headless contract defined.
-- **When packaged, register 4 CSV entries — one per intent.**
+### High — could break installation
 
-### hex-enforce — ✅ strong (new since prior report)
+1. **hex-setup runs its merge scripts with `python3`, but `merge-config.py` requires pyyaml** (declared via PEP 723). On a machine without system-wide pyyaml the install fails at the config-write step. Every other hex skill's scripts are invoked with `uv run`, which resolves PEP 723 deps. **Fix:** invoke via `uv run scripts/merge-config.py` / `uv run scripts/merge-help-csv.py` / `uv run scripts/cleanup-legacy.py`.
 
-- Frontmatter correct: `name` matches directory; verb-led description ("Gates Hexalith changes…") with five trigger phrases that route cleanly onto its three intents (review a diff / gate a PR, coverage map, propose a waiver).
-- Module handoff metadata present and consistent with the roster: `module-code: hex · phase: conformance · after: hex-consult · is-required: true`. The `after: hex-consult` ordering is real — enforce calls hex-consult headlessly for judgment-call explanations.
-- Headless contract defined, with a well-thought-out blocked policy (malformed waivers file fails loudly; no hand-computed verdicts when `gate.py` is unavailable).
-- Referenced files all exist: `references/audit-core.md`, `scripts/gate.py` (+ tests), `assets/hex-waivers-template.yaml`, full eval fixture set (`kb-mini`, `repo-mini`).
-- **When packaged, register 3 CSV entries — one per intent (gate, coverage, waiver).**
+### Medium — misleading or latent defects
 
-### Minor findings
+2. **hex-setup: leftover "bmb" copy-paste artifacts.** Confirm-section example says "Cleaned up 106 installer package files from **bmb/**, core/, _config/" (should be `hex/`); `cleanup-legacy.py`'s `--module-code` help text says `(e.g. 'bmb')`. **Fix:** replace both with `hex`.
+3. **hex-setup: `merge-help-csv.py` fallback HEADER constant uses `after`/`before`** while the shipped CSV uses `preceded-by`/`followed-by`. Latent (a header always exists today), but writes a wrong header if ever exercised. **Fix:** align the constant.
+4. **hex-setup: the TOML config branch is entirely manual.** The legacy YAML path is scripted and validated; the ≥6.10 TOML path (write `config.toml`, hand-merge rows into `_bmad/_config/bmad-help.csv`) has no script support — a larger error surface, and this project itself is on the TOML layout. **Fix:** add script support or a validation checklist for the TOML path.
+5. **hex-extend: eval coverage is 1 of 6 routes.** Only the `command` route has eval cases; the kb-mini fixture has no projection, request-handler, or ui-page entries, so those routes' KB-driven shapes (including "UI page with localization stubs") are untested. **Fix:** add at least one eval per remaining route, or one representative structural route plus ui-page.
+6. **hex-absorb: drain accounting can silently lose entries.** `entry-template.md` defaults `drained: na`, and `kb.py validate` does not enforce that AI.Tools-provenance entries have `drained: yes|no` — an AI.Tools entry left at `na` drops out of drain progress stats. **Fix:** add that cross-check to `kb.py validate`.
+7. **Cross-skill contract drift risks.** hex-migrate cites "hex-consult's explain-finding intent" (hex-consult titles it "Explain a finding", headless code `explain`); hex-enforce's headless enum maps review-diff→`gate` only implicitly; the `tier` field hex-migrate adds to findings is not validated by the shared `gate.py validate_findings`. **Fix:** state the mappings explicitly and/or validate `tier` in the shared script.
+8. **hex-migrate: report output location described two ways** — `{output_folder}/hex/` in prose vs the `--out` flag, and `{output_folder}` is never defined in its Resolution rules. **Fix:** one sentence connecting the two.
 
-| Severity | Skill | Finding | Suggestion |
-|----------|-------|---------|------------|
-| Minor | hex-absorb | Seed intent references `{project-root}/skills/reports/module-plan-bmad-hexalith.md`, a path that exists only in this builder repo — not in a target project after installation. Guarded with "when present", so nothing breaks. | Reword to make clear the module plan is a builder-repo-only seed source. |
-| Minor | hex-absorb, hex-enforce | Working artifacts live inside the skill folders: `.memlog.md` (both), `.analysis/` (hex-enforce), `scripts/__pycache__/` (hex-absorb). Harmless locally, but they must not ship in the installable module. | Exclude dot-prefixed files/dirs and `__pycache__` during CM packaging, or clean before scaffolding. |
-| Minor | (module) | `skills/reports/` (a non-skill folder) lives inside the module skills folder because `bmad_builder_reports` points there. | When running CM, ensure the scaffolder does not treat `reports/` as a skill candidate. |
-| Minor | hex-enforce | SKILL.md references sibling skills `hex-migrate` and `hex-extend` that are not built yet (shared audit core, repo-wide rerun). Consistent with the module plan, so not an error — but the composability claims are unverifiable until those skills exist. | No action now; re-validate the cross-references when hex-migrate/hex-extend land. |
+### Low — polish
 
-## Completeness vs. plan
+9. **Flag notation:** SKILL.md bodies say `--headless`, all CSV args columns say `-H`. Consider `{-H/--headless: headless mode}` in the CSV.
+10. **CSV description nitpicks:** `SK` opens with "Found the conventions KB…" — "Found" (to found) reads as past tense of "find"; "Seed…" is unambiguous and matches the display name. `NP`'s "Interview (or args) to a validated…scaffold plan" is not verb-first.
+11. **Packaging hygiene:** stray dev artifacts (`.memlog.md`, `.analysis/`) in several skill directories (absorb, consult, create, extend) will ship with the module — clean or exclude before packaging.
+12. **hex-create:** the `.slnx`-only constraint of `scaffold.py verify` lives only in the script docstring, not the SKILL.md narrative.
 
-The module plan envisions ~6 skills: hex-absorb, hex-consult, hex-enforce, hex-migrate, hex-extend, hex-create (plus hex-fleet mentioned). **Built: 3 of ~6.** Not a validation defect, but relevant to sequencing: package now and re-run CM as skills land, or finish the roster first and package once.
+## Positives
 
-## Checklist
+All file references across all seven skills resolve (zero broken references). Headless JSON contracts are precisely specified everywhere. The shared-machinery design (gate.py / audit-core.md / kb.py reused across skills) is coherent. Frontmatter trigger phrases map one-to-one onto documented intents in every skill.
 
-- [ ] Delete the stray nested tree: `rm -r skills/hex-enforce/skills`
-- [ ] Run Create Module (CM) on `skills/` to scaffold `hex-setup` (module.yaml, help CSV, merge scripts)
-- [ ] Verify CM generates 5 CSV rows for hex-absorb, 4 for hex-consult, 3 for hex-enforce
-- [ ] Ensure `reports/` is excluded from skill discovery during scaffolding
-- [ ] Ensure working artifacts (`.memlog.md`, `.analysis/`, `__pycache__`) are excluded from packaging
-- [ ] (Optional) Reword hex-absorb Seed intent's module-plan reference for portability
-- [ ] Re-run Validate Module (VM) after CM to confirm a clean pass
+## Overall assessment
+
+**The module is ready for use.** Structure, registration, and descriptions are in good shape — the CSV needed zero corrections for completeness or accuracy. Fix finding #1 before distributing (install can fail on a clean machine); #2–#4 are quick follow-ons in the same skill. Everything else is hardening and polish.
+
+## Fixes applied (same day, post-validation)
+
+- **#1 fixed** — hex-setup SKILL.md now invokes all three setup scripts (and their `--help` references) via `uv run`; the uv row in the tool-check table now covers the setup scripts too.
+- **#2 fixed** — Confirm-section example now says `hex/`; `cleanup-legacy.py` help text example now says `'hex'`.
+- **#3 fixed** — `merge-help-csv.py` HEADER constant now uses `preceded-by`/`followed-by`.
+- **#6 fixed** — `kb.py validate` now rejects `drained: na` on entries with `ai-tools:` provenance; unit test added (`test-kb.py`, 11/11 pass).
+- **#7 fixed (prose)** — hex-migrate and hex-enforce now cite hex-consult's "Explain a finding" intent by its real name with the headless code `explain`; hex-enforce's Headless section states the intent→code mapping (`gate`/`coverage`/`waiver`) explicitly. The `tier` field remains validated by `migrate.py tiers` rather than the shared `gate.py` (by design — noted, not changed).
+- **#8 fixed** — hex-migrate defines `{output_folder}` in Resolution rules and states that the resolved location is passed as `--out` to `report`/`fleet`.
+- **#9 fixed** — all CSV args entries now read `{-H/--headless: headless mode}`.
+- **#10 fixed** — `SK` description now opens with "Seed…"; `NP` description is verb-first ("Build a validated machine-readable scaffold plan…").
+- **#12 fixed** — hex-create SKILL.md states the `.slnx`-only constraint of `scaffold.py verify`.
+- **Not applied:** #4 (TOML-branch script support — design work), #5 (hex-extend eval coverage for 5 more routes — new eval cases and KB fixtures), #11 (deleting stray `.memlog.md`/`.analysis/` dev artifacts — packaging call for the maintainer).
+
+Structural validation re-run after fixes: **pass, 0 findings**. `python3 -m py_compile` clean on all touched scripts.

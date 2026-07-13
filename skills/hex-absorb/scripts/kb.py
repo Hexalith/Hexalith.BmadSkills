@@ -125,6 +125,8 @@ def cmd_validate(root: Path) -> int:
             add(f, f"tag '{fm['tag']}' invalid", "use 'mechanical' or 'judgment'")
         if fm.get("drained") and fm["drained"] not in DRAINED:
             add(f, f"drained '{fm['drained']}' invalid", "use 'yes', 'no', or 'na'")
+        if "ai-tools:" in fm.get("provenance", "") and fm.get("drained") == "na":
+            add(f, "drained 'na' invalid for ai-tools provenance", "use 'no' until the content is drained from Hexalith.AI.Tools, then 'yes'")
         if fm.get("verified") and not DATE_RE.match(fm["verified"]):
             add(f, f"verified '{fm['verified']}' is not YYYY-MM-DD", "use an ISO date or leave empty")
         for sup in filter(None, (s.strip() for s in fm.get("supersedes", "").split(","))):
